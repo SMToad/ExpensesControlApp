@@ -1,0 +1,60 @@
+﻿
+@{
+    ViewData["Title"] = "Update Expense";
+}
+
+@model ExpensesControlApp.Models.ExpenseEntry
+
+<form method="post" asp-action="Update">
+    <input asp-for="EntryId" hidden />
+    <div class="border p-3 form-group">
+        <div class="row">
+            <h2 class="text-black-50 pl-3">Update Expense</h2>
+        </div>
+       <div class="d-flex flex-column align-items-center">
+            
+                
+                    @(Html.EditorFor(m => m.Expense))
+                    <div class="col-4">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="addon-date">Date</span>
+                            </div>
+                            <input id="datepicker" class="form-control" aria-describedby="addon-date">
+                            <input id="dateinput" asp-for="Date" class="form-control" aria-describedby="addon-date" hidden>
+                            <span asp-validation-for="Date" class="text-danger"></span>
+                        </div>
+                    </div>
+                
+                <div class="row my-4">
+                    <div class="col-4 offset-4 row text-center">
+                        <div class="col">
+                            <input id="submit" type="submit" class="btn btn-outline-success w-50" value="Update"/>
+                        </div>
+                        <div class="col">
+                            <a  class="btn btn-outline-danger w-50" asp-action="Index">Go Back</a>
+                        </div>
+                    </div>
+                    
+                </div>
+            
+        </div>
+    </div>
+</form>
+@section MyScripts {
+    <script>
+    
+        $(document).ready(function(){
+            $("#datepicker").datepicker({
+                dateFormat: "dd.mm.yy",
+                firstDay: 1
+            });
+            let date = $("#dateinput").val().split("-").reverse().join(".");
+            $("#datepicker").val(date);
+        });
+        $("#submit").click(function(){
+            let date = $("#datepicker").val().split(".").reverse().join("-");
+            $("#dateinput").val(date);
+        });
+    </script>
+}

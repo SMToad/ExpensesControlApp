@@ -1,0 +1,29 @@
+﻿@{
+    ViewData["Title"] = "Update Expense";
+}
+
+@model ExpensesControlApp.Models.Expense
+
+<form id="form" method="post">
+    <input asp-for="Id" hidden />
+    <div class="border p-3 form-group">
+        <div class="row">
+            <h2 class="text-black-50 pl-3">Update Expense</h2>
+        </div>
+        <div class="d-flex flex-column align-items-center">
+           @(Html.EditorFor(m => m))
+           </div>
+            <div class="row my-4">
+                <div class="col-4 offset-4 row text-center">
+                    <div class="col">
+                        <input type="submit" class="btn btn-outline-success w-50"  asp-action="Update" value="Next" />
+                    </div>
+                    <div class="col">
+                        <input type="submit" class="btn btn-outline-danger w-50" asp-action="Delete" value="Cancel"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+</form>
+

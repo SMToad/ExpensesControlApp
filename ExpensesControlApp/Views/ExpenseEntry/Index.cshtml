@@ -1,0 +1,172 @@
+﻿@{
+    ViewData["Title"] = "Expenses";
+}
+
+@model  ExpensesControlApp.ViewModels.ExpenseEntryViewModel
+<div class="container p-3" id="temp">
+    
+    <div class="row pt-4">
+        <div class="col-6">
+            <h2 id="title" class="text-dark">Expenses For @TempData["LimitTimeSpan"]</h2>
+        </div>
+
+    </div>
+    <div class="row pt-4">
+        <div class="col-6">
+            <form id="form" asp-action="Index">
+                <input id="sort-input" name="sortOrder" hidden />
+                <input id="time-input" name="timeSpan" hidden />
+                <div class="dropdown">
+                    <button class="btn btn-outline-dark dropdown-toggle" type="button" id="dropdownMenu" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Time Span
+                    </button>
+                    <ul class="dropdown-menu" id="dropdown-bar" aria-labelledby="dropdownMenu">
+                        <li><button data-list="today" class="drop-btn dropdown-item">Today</button></li>
+                        <li><button data-list="week" class="drop-btn dropdown-item">This Week</button></li>
+                        <li><button data-list="month" class="drop-btn dropdown-item">This Month</button></li>
+                        <li><button data-list="total" class="drop-btn dropdown-item">Total</button></li>
+                    </ul>
+                </div>
+            </form>
+        </div>
+
+        <div class="col-6 text-end">
+            <a class="btn btn-outline-dark" asp-controller="Expense" asp-action="Create">Add new Expense</a>
+        </div>
+    </div>
+    <br />
+
+    @if (Model.ExpenseEntries?.Count() > 0)
+    {
+        <table class="table table-bordered table-hover mb-5" style="width:100%">
+            <thead>
+                <tr>
+                    
+                    <th>
+                        <a role="button" data-list="@ViewBag.NameSortParm" class="sort-link text-decoration-none text-dark">Expense Name</a>
+                    </th>
+                    <th>
+                        <a role="button" data-list="@ViewBag.AmountSortParm" class="sort-link text-decoration-none text-dark">Amount</a>
+                   </th>
+
+                    <th>
+                        <a role="button" data-list="@ViewBag.DateSortParm" class="sort-link text-decoration-none text-dark">Date</a>
+                   </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var entry in Model.ExpenseEntries)
+                {
+
+                    <tr>
+                        <td class="col-3">@entry.Expense.ExpenseName</td>
+                        <td class="col-3">@entry.Expense.Amount</td>
+                        <td class="col-3">@entry.Date.ToShortDateString()</td>
+                        <td class="col-3">
+                            <div class="w-100 btn-group" role="group">
+                                <a class="btn btn-outline-success mx-1" asp-route-entryId="@entry.EntryId" asp-action="Update">
+                                    <i class="fa fa-pen"></i>
+                                </a>
+                                <a class="delete-btn btn btn-outline-danger mx-1" onclick="getId(@entry.EntryId)">
+                                    <i class="fa fa-trash-can"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+                <tr id="confirm-bar" style="display:none;">
+                    <td colspan="3"></td>
+                    <td class="text-end">
+                        <div class="d-flex flex-row justify-content-between">
+                            <p>Please Confirm</p>
+                            <form method="post" asp-action="Delete">
+                                <input id="entryId" name="entryId" hidden />
+                                <button type="submit" class="btn btn-outline-success mx-1">
+                                    <i class="fa fa-check"></i>
+                                </button>
+                                <a class="btn btn-outline-danger mx-1" onclick="hideConfirm()">
+                                    <i class="fa fa-xmark"></i>
+                                </a>
+                            </form>
+
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div id="stats-bar">
+            <div class="d-flex flex-row h4">
+                <div class="col-3">
+                    <p class="text-end px-2">Total:</p>
+                </div>
+                <div class="col-3">
+                    <p id="total" class="px-2">@Model.ExpenseEntries.Sum(x => x.Expense.Amount)</p>
+                </div>
+                <div class="avail-container col-3">
+                    <p class="text-end px-2 fw-bold">Available:</p>
+                </div>
+                <div class="avail-container col-3">
+                    <p id="available" class="px-2 fw-bold">@Model.ExpenseEntries.Sum(x => x.Expense.Amount)</p>
+                    
+                </div>
+            </div>
+            <div class="progress" style="height: 5px;">
+                <div id="progress-bar" class="progress-bar bg-dark" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+        </div>
+
+    }
+    else
+    {
+        <h1>No Expenses in this Time Span</h1>
+    }
+    
+</div>
+@section MyScripts {
+    <script>
+        let deleteId = -1;
+        let limitAmount = parseInt('@TempData["LimitAmount"]');
+        let timeSpan = '@TempData["TimeSpan"]';
+        let sortOrder = '@TempData["SortOrder"]';
+
+            function hideConfirm(speed = "slow") {
+                 $("#confirm-bar").slideUp(speed);
+            }
+            function getId(id) {
+                deleteId = id;
+            }
+            $(document).click(function(event){
+                var $target = $(event.target);
+                var isInside = $target.closest("#confirm-bar").length || $target.closest(".delete-btn").length;
+                if (!isInside) hideConfirm("fast");
+            });
+            $(".delete-btn").click(function(){
+                 $("#confirm-bar").insertAfter($(this).closest('tr'));
+                 $("#confirm-bar").slideDown("slow");
+                 $("#entryId").attr("value", deleteId);
+                 deleteId = -1;
+            });
+            $(".sort-link").click(function(){
+                $("#sort-input").attr("value", $(this).data('list'));
+                $("#time-input").attr("value", timeSpan);
+                $("#form").submit();
+            });
+            $(".drop-btn").click(function(){
+                 $("#time-input").attr("value", $(document.activeElement).data('list'));
+                 $("#sort-input").attr("value", sortOrder);
+            });
+            $(document).ready(function(){
+                let total = parseFloat($("#total").text());
+                if(!limitAmount) limitAmount = total;
+                let available = limitAmount - total;
+                let percentage = total * 100 / limitAmount;
+                $("#progress-bar").attr({"aria-valuenow": total, "aria-valuemax": limitAmount}).css("width", percentage + "%");
+                
+                if(timeSpan == "total")
+                {
+                     $(".avail-container").hide();
+                }
+                else $("#available").text(available);
+            });
+    </script>
+}

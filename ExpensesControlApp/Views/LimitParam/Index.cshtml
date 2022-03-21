@@ -1,0 +1,63 @@
+﻿@using ExpensesControlApp.ViewModels
+@{
+    ViewData["Title"] = "Limit";
+}
+
+@model ExpensesControlApp.ViewModels.LimitParam
+
+<form id="form" method="post" asp-action="Save">
+    <div class="border p-3 form-group">
+        <div class="row">
+            <h2 class="text-black-50 pl-3">Set Limit</h2>
+        </div>
+        <div class="row">
+            <div class="col-12">
+
+                <div class="d-flex flex-row justify-content-center my-5">
+                    <div class="col-3 mx-5">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="addon-amount">Amount</span>
+                            </div>
+                            <input asp-for="Amount" class="form-control" aria-describedby="addon-amount">
+                            <span asp-validation-for="Amount" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-3 mx-5">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="addon-date">Time Span</span>
+                            </div>
+                            <input id="timespan-input" asp-for="TimeSpan" class="form-control" aria-describedby="addon-date" hidden>
+                            <input type="radio" name="timespan" class="btn-check" value="0" id="time-option1" autocomplete="off">
+                            <label class="btn btn-outline-secondary" for="time-option1">@TimeOptions.Weekly</label>
+                            <input type="radio" name="timespan" class="btn-check" value="1" id="time-option2" autocomplete="off">
+                            <label class="btn btn-outline-secondary" for="time-option2">@TimeOptions.Monthly</label>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row my-4">
+                    <div class="col-4 offset-4 row text-center">
+                        <div class="col">
+                            <input id="submit" type="submit" class="btn btn-outline-success w-50" value="Save" />
+                        </div>
+                        <div class="col">
+                            <a class="btn btn-outline-danger w-50" asp-controller="Expense" asp-action="Index">Go Back</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+@section MyScripts {
+    <script>
+        $('input[name="timespan"]').click(function(){
+            $("#timespan-input").val($('input[name="timespan"]:checked').val());
+        });
+    </script>
+    
+}
+
