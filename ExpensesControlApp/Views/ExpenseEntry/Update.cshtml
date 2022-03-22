@@ -14,8 +14,25 @@
        <div class="d-flex flex-column align-items-center">
             
                 
-                    @(Html.EditorFor(m => m.Expense))
-                    <div class="col-4">
+                    @*@(Html.EditorFor(m => m.Expense))*@
+                    <input asp-for="ExpenseId" hidden />
+                    <div class="col-5">
+                        <div class="input-group">
+                            <div class="col-3 input-group-prepend">
+                                <span class="input-group-text" id="addon-name">Expense Name</span>
+                            </div>
+                            <input asp-for="ExpenseName" class="form-control" aria-describedby="addon-name">
+                        </div>
+                    </div>
+                    <div class="col-5">
+                        <div class="input-group">
+                            <div class="col-3 input-group-prepend">
+                                <span class="input-group-text" id="addon-amount">Amount</span>
+                            </div>
+                            <input asp-for="Amount" class="form-control" aria-describedby="addon-amount">
+                        </div>
+                    </div>
+                    <div class="col-5">
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="addon-date">Date</span>
@@ -25,20 +42,20 @@
                             <span asp-validation-for="Date" class="text-danger"></span>
                         </div>
                     </div>
-                
+                </div>
                 <div class="row my-4">
                     <div class="col-4 offset-4 row text-center">
                         <div class="col">
                             <input id="submit" type="submit" class="btn btn-outline-success w-50" value="Update"/>
                         </div>
                         <div class="col">
-                            <a  class="btn btn-outline-danger w-50" asp-action="Index">Go Back</a>
+                            <a  class="btn btn-outline-danger w-50" asp-action="Index">Cancel</a>
                         </div>
                     </div>
                     
                 </div>
             
-        </div>
+        
     </div>
 </form>
 @section MyScripts {

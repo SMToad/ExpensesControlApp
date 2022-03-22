@@ -9,9 +9,9 @@ namespace ExpensesControlApp.Helpers
         {
             switch (limitParam.TimeSpan)
             {
-                case TimeOptions.Weekly:
+                case TimeOption.Weekly:
                     return (Convert.ToDouble(limitParam.Amount) / 7 * DateTime.DaysInMonth(DateTime.Today.Year, DateTime.Today.Month)).ToString();
-                case TimeOptions.Monthly:
+                case TimeOption.Monthly:
                     return limitParam.Amount.ToString();
                 default:
                     return string.Empty;

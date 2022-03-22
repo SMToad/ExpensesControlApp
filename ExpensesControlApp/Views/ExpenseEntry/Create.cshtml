@@ -5,21 +5,18 @@
 @model ExpensesControlApp.Models.ExpenseEntry
 
 <form id="form" method="post">
-    <input asp-for="ExpenseId" hidden />
     <div class="border p-3 form-group">
         <div class="row">
             <h2 class="text-black-50 pl-3">Add Expense</h2>
         </div>
         <div class="d-flex flex-column align-items-center">
-           
-                
                     @*@(Html.EditorFor(m => m.Expense))*@
                     <div class="col-5">
                         <div class="input-group">
                             <div class="col-3 input-group-prepend">
                                 <span class="input-group-text" id="addon-name">Expense Name</span>
                             </div>
-                            <input asp-for="Expense.ExpenseName" class="form-control" aria-describedby="addon-name" disabled>
+                            <input asp-for="ExpenseName" class="form-control" aria-describedby="addon-name">
                         </div>
                     </div>
                     <div class="col-5">
@@ -27,7 +24,7 @@
                             <div class="col-3 input-group-prepend">
                                 <span class="input-group-text" id="addon-amount">Amount</span>
                             </div>
-                            <input asp-for="Expense.Amount" class="form-control" aria-describedby="addon-amount" disabled>
+                            <input asp-for="Amount" class="form-control" aria-describedby="addon-amount">
                         </div>
                     </div>
                     <div class="col-5">
@@ -44,13 +41,10 @@
                 <div class="row my-4">
                     <div class="col-4 offset-4 row text-center">
                         <div class="col">
-                            <input id="submit-create" type="submit" class="btn btn-outline-success w-50"  asp-action="CreatePost" value="Create" />
+                            <input id="submit-create" type="submit" class="btn btn-outline-success w-50"  asp-action="Create" value="Create"/>
                         </div>
                         <div class="col">
-                            <a class="btn btn-outline-secondary w-50" asp-controller="Expense" asp-action="Update" asp-route-Id="@Model.ExpenseId">Go Back</a>
-                        </div>
-                        <div class="col">
-                            <input type="submit" class="btn btn-outline-danger w-50" asp-controller="Expense" asp-action="DeleteEntry" value="Cancel" />
+                            <a class="btn btn-outline-danger w-50" asp-action="Index">Cancel</a>
                         </div>
                     </div>
                 </div>

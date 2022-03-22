@@ -15,9 +15,9 @@ namespace ExpensesControlApp.Models
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime Date { get; set; }
-        //[NotMapped]
-        //public string ExpenseName { get; set; }
-        //[NotMapped]
-        //public decimal Amount { get; set; }
+        [NotMapped]
+        public string ExpenseName { get; set; }
+        [NotMapped]
+        public decimal Amount { get; set; }
     }
 }

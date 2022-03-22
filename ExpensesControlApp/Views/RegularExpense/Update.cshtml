@@ -1,60 +1,63 @@
 ﻿@using ExpensesControlApp.Helpers
+
 @{
-    ViewData["Title"] = "Limit";
+    ViewData["Title"] = "Update Regular Expense";
 }
 
-@model ExpensesControlApp.ViewModels.LimitParam
+@model ExpensesControlApp.ViewModels.RegExpViewModel
 
-<form id="form" method="post" asp-action="Save">
+<form method="post" asp-action="Update">
+    <input asp-for="RegularExpenseId" hidden />
     <div class="border p-3 form-group">
         <div class="row">
-            <h2 class="text-black-50 pl-3">Set Limit</h2>
+            <h2 class="text-black-50 pl-3">Update Regular Expense</h2>
         </div>
-        <div class="row">
-            <div class="col-12">
-
-                <div class="d-flex flex-row justify-content-center my-5">
-                    <div class="col-3 mx-5">
+       <div class="d-flex flex-column align-items-center">
+                    @*@(Html.EditorFor(m => m.Expense))*@
+                    <input asp-for="ExpenseId" hidden />
+                    <div class="col-5">
                         <div class="input-group">
-                            <div class="input-group-prepend">
+                            <div class="col-3 input-group-prepend">
+                                <span class="input-group-text" id="addon-name">Expense Name</span>
+                            </div>
+                            <input asp-for="ExpenseName" class="form-control" aria-describedby="addon-name">
+                        </div>
+                    </div>
+                    <div class="col-5">
+                        <div class="input-group">
+                            <div class="col-3 input-group-prepend">
                                 <span class="input-group-text" id="addon-amount">Amount</span>
                             </div>
                             <input asp-for="Amount" class="form-control" aria-describedby="addon-amount">
-                            <span asp-validation-for="Amount" class="text-danger"></span>
                         </div>
                     </div>
-                    <div class="col-3 mx-5">
+                    <div class="col-5">
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="addon-timespan">Time Span</span>
                             </div>
-                            <input id="timespan-input" asp-for="TimeSpan" class="form-control" aria-describedby="addon-timespan" hidden>
+                            input id="timespan-input" asp-for="TimeSpan" class="form-control" aria-describedby="addon-timespan" hidden>
                             <input type="radio" name="timespan" class="@(Model.TimeSpan == TimeOption.Weekly? "checked" : "") btn-check" value="0" id="time-option1" autocomplete="off">
                             <label class="btn btn-outline-secondary" for="time-option1">@TimeOption.Weekly</label>
                             <input type="radio" name="timespan" class="@(Model.TimeSpan == TimeOption.Monthly? "checked" : "") btn-check" value="1" id="time-option2" autocomplete="off">
                             <label class="btn btn-outline-secondary" for="time-option2">@TimeOption.Monthly</label>
-
                         </div>
                     </div>
                 </div>
-
                 <div class="row my-4">
                     <div class="col-4 offset-4 row text-center">
                         <div class="col">
-                            <input id="submit" type="submit" class="btn btn-outline-success w-50" value="Save" />
+                            <input id="submit" type="submit" class="btn btn-outline-success w-50" value="Update"/>
                         </div>
                         <div class="col">
-                            <a class="btn btn-outline-danger w-50" asp-controller="ExpenseEntry" asp-action="Index">Go Back</a>
+                            <a  class="btn btn-outline-danger w-50" asp-action="Index">Cancel</a>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
     </div>
 </form>
 @section MyScripts {
     <script>
-        
         $('input[name="timespan"]').click(function(){
             $("#timespan-input").val($('input[name="timespan"]:checked').val());
         });
@@ -62,6 +65,4 @@
             $(".checked").prop("checked", true);
         });
     </script>
-    
 }
-

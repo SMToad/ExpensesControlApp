@@ -28,7 +28,7 @@ namespace ExpensesControlApp.Controllers
                 var timeSpan = _db.Params.SingleOrDefault(p => p.Key == "limitTimeSpan");
                 timeSpan.Value = ((int)obj.TimeSpan).ToString();
                 _db.SaveChanges();
-                return RedirectToAction("Index", "Expense");
+                return RedirectToAction("Index", "ExpenseEntry");
             }
             return View(obj);
         }

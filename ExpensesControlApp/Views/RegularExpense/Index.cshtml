@@ -1,0 +1,118 @@
+﻿@{
+    ViewData["Title"] = "Regular Expenses";
+}
+
+@model  IEnumerable<ExpensesControlApp.ViewModels.RegExpViewModel>
+<div class="container p-3" id="temp">
+    
+    <div class="row pt-4">
+        <div class="col-6">
+            <h2 id="title" class="text-dark">Regular Expenses</h2>
+        </div>
+
+    </div>
+    <div class="row pt-4">
+        <div class="col-6">
+            <form id="form" asp-action="Index">
+                <input id="sort-input" name="sortOrder" hidden />
+            </form>
+        </div>
+        <div class="col-6 text-end">
+            <a class="btn btn-outline-dark" asp-action="Create">Add new Regular Expense</a>
+        </div>
+    </div>
+    <br />
+
+    @if (Model.Count() > 0)
+    {
+        <table class="table table-bordered table-hover mb-5" style="width:100%">
+            <thead>
+                <tr>
+                    
+                    <th>
+                        <a role="button" data-list="@ViewBag.NameSortParm" class="sort-link text-decoration-none text-dark">Expense Name</a>
+                    </th>
+                    <th>
+                        <a role="button" data-list="@ViewBag.AmountSortParm" class="sort-link text-decoration-none text-dark">Amount</a>
+                   </th>
+
+                    <th>
+                        <a role="button" data-list="@ViewBag.TimeSortParm" class="sort-link text-decoration-none text-dark">Time Span</a>
+                   </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var regExpense in Model)
+                {
+
+                    <tr>
+                        <td class="col-3">@regExpense.ExpenseName</td>
+                        <td class="col-3">@regExpense.Amount</td>
+                        <td class="col-3">@(regExpense.TimeSpan)</td>
+                        <td class="col-3">
+                            <div class="w-100 btn-group" role="group">
+                                <a class="btn btn-outline-success mx-1" asp-route-regExpenseId="@regExpense.RegularExpenseId" asp-action="Update">
+                                    <i class="fa fa-pen"></i>
+                                </a>
+                                <a class="delete-btn btn btn-outline-danger mx-1" onclick="getId(@regExpense.RegularExpenseId)">
+                                    <i class="fa fa-trash-can"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+                <tr id="confirm-bar" style="display:none;">
+                    <td colspan="3"></td>
+                    <td class="text-end">
+                        <div class="d-flex flex-row justify-content-between">
+                            <p>Please Confirm</p>
+                            <form method="post" asp-action="Delete">
+                                <input id="regExpenseId" name="regExpenseId" hidden />
+                                <button type="submit" class="btn btn-outline-success mx-1">
+                                    <i class="fa fa-check"></i>
+                                </button>
+                                <a class="btn btn-outline-danger mx-1" onclick="hideConfirm()">
+                                    <i class="fa fa-xmark"></i>
+                                </a>
+                            </form>
+
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <h1>No Regular Expenses Created Yet</h1>
+    }
+    
+</div>
+@section MyScripts {
+    <script>
+        let deleteId = -1;
+        let sortOrder = '@TempData["SortOrder"]';
+
+            function hideConfirm(speed = "slow") {
+                 $("#confirm-bar").slideUp(speed);
+            }
+            function getId(id) {
+                deleteId = id;
+            }
+            $(document).click(function(event){
+                var $target = $(event.target);
+                var isInside = $target.closest("#confirm-bar").length || $target.closest(".delete-btn").length;
+                if (!isInside) hideConfirm("fast");
+            });
+            $(".delete-btn").click(function(){
+                 $("#confirm-bar").insertAfter($(this).closest('tr'));
+                 $("#confirm-bar").slideDown("slow");
+                 $("#regExpenseId").attr("value", deleteId);
+                 deleteId = -1;
+            });
+            $(".sort-link").click(function(){
+                $("#sort-input").attr("value", $(this).data('list'));
+                $("#form").submit();
+            });
+    </script>
+}
