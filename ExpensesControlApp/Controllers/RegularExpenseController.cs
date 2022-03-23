@@ -3,7 +3,6 @@ using ExpensesControlApp.Helpers;
 using ExpensesControlApp.Models;
 using ExpensesControlApp.ViewModels;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
 namespace ExpensesControlApp.Controllers
@@ -40,7 +39,7 @@ namespace ExpensesControlApp.Controllers
 
             ViewBag.NameSortParm = sortOrder == "name" ? "name_desc" : "name";
             ViewBag.AmountSortParm = sortOrder == "amount" ? "amount_desc" : "amount";
-            ViewBag.TimeSortParm = sortOrder == "time_desc" ? "time" : "time_desc";
+            ViewBag.TimeSortParm = sortOrder == "time" ? "time_desc" : "time";
 
             switch (sortOrder)
             {

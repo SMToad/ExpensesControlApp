@@ -9,10 +9,10 @@ using System.Linq.Expressions;
 
 namespace ExpensesControlApp.Controllers
 {
-    public class ExpenseEntryController : Controller
+    public class ExpenseManagerController : Controller
     {
         private readonly ApplicationDbContext _db;
-        public ExpenseEntryController(ApplicationDbContext db)
+        public ExpenseManagerController(ApplicationDbContext db)
         {
             _db = db;
         }
@@ -40,7 +40,23 @@ namespace ExpensesControlApp.Controllers
                                    Amount = entry.Amount,
                                    Date = entry.Date
                                });
-            
+            var regExpList = (from exp in _db.Expenses
+                              join regExp in _db.RegularExpenses
+                              on exp.Id equals regExp.ExpenseId
+                              select new
+                              {
+                                  Id = regExp.RegularExpenseId,
+                                  ExpenseId = exp.Id,
+                                  Expense = regExp.Expense,
+                                  TimeSpan = regExp.TimeSpan
+                              }).ToList()
+                               .Select(regExp => new RegExpViewModel(new RegularExpense()
+                               {
+                                   RegularExpenseId = regExp.Id,
+                                   ExpenseId = regExp.ExpenseId,
+                                   Expense = regExp.Expense,
+                                   TimeSpan = regExp.TimeSpan
+                               }));
             LimitParam limitParams = new LimitParam(_db.Params);
             TempData["TimeSpan"] = timeSpan ?? "total";
             TempData["SortOrder"] = sortOrder ?? "date_desc";
@@ -54,17 +70,21 @@ namespace ExpensesControlApp.Controllers
             {
                 case "today":
                     expenseList = expenseList.Where(o => o.Date.Date == DateTime.Today);
+                    regExpList = null;
                     timeSpanOption = new Today();
                     break;
                 case "week":
                     expenseList = expenseList.Where(o => ISOWeek.GetWeekOfYear(o.Date) == ISOWeek.GetWeekOfYear(DateTime.Today));
+                    regExpList = regExpList.Where(o => o.TimeSpan == TimeOption.Weekly);
                     timeSpanOption = new Week();
                     break;
                 case "month":
                     expenseList = expenseList.Where(o => o.Date.Month == DateTime.Today.Month);
+                    regExpList = regExpList.Where(o => o.TimeSpan == TimeOption.Monthly);
                     timeSpanOption = new Month();
                     break;
                 default:
+                    regExpList = null;
                     timeSpanOption = new Total();
                     break;
             }
@@ -75,15 +95,19 @@ namespace ExpensesControlApp.Controllers
             {
                 case "name":
                     expenseList = expenseList.OrderBy(o => o.ExpenseName).ToList();
+                    regExpList = regExpList.OrderBy(o => o.ExpenseName).ToList();
                     break;
                 case "name_desc":
                     expenseList = expenseList.OrderByDescending(o => o.ExpenseName).ToList();
+                    regExpList = regExpList.OrderByDescending(o => o.ExpenseName).ToList();
                     break;
                 case "amount":
                     expenseList = expenseList.OrderBy(o => o.Amount).ToList();
+                    regExpList = regExpList.OrderBy(o => o.Amount).ToList();
                     break;
                 case "amount_desc":
                     expenseList = expenseList.OrderByDescending(o => o.Amount).ToList();
+                    regExpList = regExpList.OrderByDescending(o => o.Amount).ToList();
                     break;
                 case "date":
                     expenseList = expenseList.OrderBy(o => o.Date).ToList();
@@ -93,7 +117,7 @@ namespace ExpensesControlApp.Controllers
                     break;
             }
 
-            return View(new ExpenseEntryViewModel() { ExpenseEntries = expenseList, LimitParam = limitParams });
+            return View(new ExpenseManagerViewModel() { ExpenseEntries = expenseList, RegularExpenses = regExpList, LimitParam = limitParams });
         }
 
         public IActionResult Create()

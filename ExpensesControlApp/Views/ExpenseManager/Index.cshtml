@@ -1,8 +1,11 @@
 ﻿@{
     ViewData["Title"] = "Expenses";
+    bool isEntriesNotNull = Model.ExpenseEntries?.Count() > 0;
+    bool isRegExpensesNotNull = Model.RegularExpenses?.Count() > 0;
+    decimal expensesSum = (Model.ExpenseEntries?.Sum(x => x.Amount) ?? 0) + (Model.RegularExpenses?.Sum(x => x.Amount) ?? 0);
 }
 
-@model  ExpensesControlApp.ViewModels.ExpenseEntryViewModel
+@model  ExpensesControlApp.ViewModels.ExpenseManagerViewModel
 <div class="container p-3" id="temp">
     
     <div class="row pt-4">
@@ -35,8 +38,8 @@
         </div>
     </div>
     <br />
-
-    @if (Model.ExpenseEntries?.Count() > 0)
+    
+    @if (isEntriesNotNull || isRegExpensesNotNull)
     {
         <table class="table table-bordered table-hover mb-5" style="width:100%">
             <thead>
@@ -55,25 +58,37 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var entry in Model.ExpenseEntries)
-                {
+                @if(isRegExpensesNotNull)
+                    @foreach (var entry in Model.RegularExpenses)
+                    {
 
-                    <tr>
-                        <td class="col-3">@entry.ExpenseName</td>
-                        <td class="col-3">@entry.Amount</td>
-                        <td class="col-3">@entry.Date.ToShortDateString()</td>
-                        <td class="col-3">
-                            <div class="w-100 btn-group" role="group">
-                                <a class="btn btn-outline-success mx-1" asp-route-entryId="@entry.EntryId" asp-action="Update">
-                                    <i class="fa fa-pen"></i>
-                                </a>
-                                <a class="delete-btn btn btn-outline-danger mx-1" onclick="getId(@entry.EntryId)">
-                                    <i class="fa fa-trash-can"></i>
-                                </a>
-                            </div>
-                        </td>
-                    </tr>
-                }
+                        <tr>
+                            <td class="col-3">@entry.ExpenseName</td>
+                            <td class="col-3">@entry.Amount</td>
+                            <td class="col-3"></td>
+                            <td class="col-3"></td>
+                        </tr>
+                    }
+                @if(isEntriesNotNull)
+                    @foreach (var entry in Model.ExpenseEntries)
+                    {
+
+                        <tr>
+                            <td class="col-3">@entry.ExpenseName</td>
+                            <td class="col-3">@entry.Amount</td>
+                            <td class="col-3">@entry.Date.ToShortDateString()</td>
+                            <td class="col-3">
+                                <div class="w-100 btn-group" role="group">
+                                    <a class="btn btn-outline-success mx-1" asp-route-entryId="@entry.EntryId" asp-action="Update">
+                                        <i class="fa fa-pen"></i>
+                                    </a>
+                                    <a class="delete-btn btn btn-outline-danger mx-1" onclick="getId(@entry.EntryId)">
+                                        <i class="fa fa-trash-can"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
                 <tr id="confirm-bar" style="display:none;">
                     <td colspan="3"></td>
                     <td class="text-end">
@@ -100,13 +115,14 @@
                     <p class="text-end px-2">Total:</p>
                 </div>
                 <div class="col-3">
-                    <p id="total" class="px-2">@Model.ExpenseEntries.Sum(x => x.Amount)</p>
+                    
+                    <p id="total" class="px-2">@expensesSum</p>
                 </div>
                 <div class="avail-container col-3">
                     <p class="text-end px-2 fw-bold">Available:</p>
                 </div>
                 <div class="avail-container col-3">
-                    <p id="available" class="px-2 fw-bold">@Model.ExpenseEntries.Sum(x => x.Amount)</p>
+                    <p id="available" class="px-2 fw-bold"></p>
                     
                 </div>
             </div>
