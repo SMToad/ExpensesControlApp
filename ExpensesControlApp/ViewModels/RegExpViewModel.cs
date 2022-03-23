@@ -10,6 +10,7 @@ namespace ExpensesControlApp.ViewModels
         public string ExpenseName { get; set; }
         public decimal Amount { get; set; }
         public TimeOption TimeSpan { get; set; }
+        public RegExpViewModel() { }
         public RegExpViewModel(RegularExpense regExpense)
         {
             RegularExpenseId = regExpense.RegularExpenseId;

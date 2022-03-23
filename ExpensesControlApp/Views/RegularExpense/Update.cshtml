@@ -36,7 +36,7 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="addon-timespan">Time Span</span>
                             </div>
-                            input id="timespan-input" asp-for="TimeSpan" class="form-control" aria-describedby="addon-timespan" hidden>
+                            <input id="timespan-input" asp-for="TimeSpan" class="form-control" aria-describedby="addon-timespan" hidden>
                             <input type="radio" name="timespan" class="@(Model.TimeSpan == TimeOption.Weekly? "checked" : "") btn-check" value="0" id="time-option1" autocomplete="off">
                             <label class="btn btn-outline-secondary" for="time-option1">@TimeOption.Weekly</label>
                             <input type="radio" name="timespan" class="@(Model.TimeSpan == TimeOption.Monthly? "checked" : "") btn-check" value="1" id="time-option2" autocomplete="off">

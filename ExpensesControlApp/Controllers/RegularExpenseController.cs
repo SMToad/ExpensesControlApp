@@ -16,7 +16,7 @@ namespace ExpensesControlApp.Controllers
             _db = db;
         }
         //GET-Index
-        public IActionResult Index(string? timeSpan, string? sortOrder)
+        public IActionResult Index(string? sortOrder)
         {
             // expense list for the ViewModel
             var expenseList = (from exp in _db.Expenses
@@ -32,7 +32,7 @@ namespace ExpensesControlApp.Controllers
                                .Select(regExp => new RegExpViewModel(new RegularExpense()
                                {
                                    RegularExpenseId = regExp.Id,
-                                   ExpenseId = regExp.Id,
+                                   ExpenseId = regExp.ExpenseId,
                                    Expense = regExp.Expense,
                                    TimeSpan = regExp.TimeSpan
                                }));
@@ -76,26 +76,30 @@ namespace ExpensesControlApp.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(RegExpViewModel regExpViewModel)
         {
-            // Add Expense if it doesn't exist already
-            var expense = new Expense() { ExpenseName = regExpViewModel.ExpenseName, Amount = regExpViewModel.Amount };
-            Expression<Func<Expense, bool>> predicate = (x => x.ExpenseName == expense.ExpenseName && x.Amount == expense.Amount);
-            _db.Expenses.AddIfNotExists<Expense>(expense, predicate);
-            _db.SaveChanges();
-            // Add ExpenseEntry if it doesn't exist already
+            Expression<Func<Expense, bool>> predicate = (x => x.ExpenseName == regExpViewModel.ExpenseName && x.Amount == regExpViewModel.Amount);
+
             var expenseInDb = _db.Expenses.FirstOrDefault(predicate);
-            var regExpense = new RegularExpense()
-            {
-                Expense = expenseInDb,
-                ExpenseId = expenseInDb.Id,
-                TimeSpan = (int)regExpViewModel.TimeSpan
-            };
-            //if (ModelState.IsValid)
-            //{
-            _db.RegularExpenses.AddIfNotExists(regExpense, x => x.TimeSpan == regExpense.TimeSpan && x.ExpenseId == regExpense.ExpenseId);
-            _db.SaveChanges();
-            return RedirectToAction("Index");
+            if (expenseInDb == null)
+            { // Add Expense if it doesn't exist already
+                var expense = new Expense() { ExpenseName = regExpViewModel.ExpenseName, Amount = regExpViewModel.Amount };
+                 _db.Expenses.AddIfNotExists<Expense>(expense, predicate);
+                _db.SaveChanges();
+                // Add ExpenseEntry if it doesn't exist already
+                expenseInDb = _db.Expenses.FirstOrDefault(predicate);
+                var regExpense = new RegularExpense()
+                {
+                    Expense = expenseInDb,
+                    ExpenseId = expenseInDb.Id,
+                    TimeSpan = (int)regExpViewModel.TimeSpan
+                };
+                //if (ModelState.IsValid)
+                //{
+                _db.RegularExpenses.AddIfNotExists(regExpense, x => x.TimeSpan == regExpense.TimeSpan && x.ExpenseId == regExpense.ExpenseId);
+                _db.SaveChanges();
+                return RedirectToAction("Index");
+            }
             //}
-            //return View(expenseEntry);
+            return View(regExpViewModel);
         }
         // GET Update
         public IActionResult Update(int? regExpenseId)
@@ -115,66 +119,42 @@ namespace ExpensesControlApp.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Update(RegExpViewModel regExpViewModel)
         {
-            //if (ModelState.IsValid)
-            //{
-            var expense = new Expense()
+            if (ModelState.IsValid)
             {
-                Id = regExpViewModel.ExpenseId,
-                ExpenseName = regExpViewModel.ExpenseName,
-                Amount = regExpViewModel.Amount
-            };
-            var expenseInDb = _db.Expenses.Find(expense.Id);
-            // if Expense entity was modified
-            if (expenseInDb.ExpenseName != expense.ExpenseName || expenseInDb.Amount != expense.Amount)
-            {
-                // update if this Expense entity isn't connected to other ExpenseEntry entities
-                if (_db.RegularExpenses.Where(o => o.ExpenseId == expense.Id).Count() == 1)
-                    _db.Expenses.Update(expense);
-                else
+                var expense = new Expense()
                 {
-                    // else add a new Expense entity if it doesn't already exist
-                    expense.Id = 0;
-                    _db.Expenses.AddIfNotExists<Expense>(expense, x => x.ExpenseName == expense.ExpenseName && x.Amount == expense.Amount);
-                }
+                    Id = regExpViewModel.ExpenseId,
+                    ExpenseName = regExpViewModel.ExpenseName,
+                    Amount = regExpViewModel.Amount
+                };
+                _db.Expenses.Update(expense);
+                // update ExpenseEntry entity
+                var regExpense = new RegularExpense()
+                {
+                    RegularExpenseId = regExpViewModel.RegularExpenseId,
+                    Expense = expense,
+                    ExpenseId = expense.Id,
+                    TimeSpan = (int)regExpViewModel.TimeSpan
+                };
+                _db.RegularExpenses.Update(regExpense);
                 _db.SaveChanges();
-                // get new ExpenseId if it was modified 
-                if (expense.Id == 0)
-                {
-                    expense = _db.Expenses.FirstOrDefault(x => x.ExpenseName == expense.ExpenseName && x.Amount == expense.Amount);
-                }
+                return RedirectToAction("Index");
             }
-            _db.Entry(expenseInDb).State = EntityState.Detached;
-            // update ExpenseEntry entity
-            var regExpense = new RegularExpense()
-            {
-                Expense = expense,
-                ExpenseId = expense.Id,
-                TimeSpan = (int)regExpViewModel.TimeSpan
-            };
-            _db.RegularExpenses.Update(regExpense);
-            _db.SaveChanges();
-            return RedirectToAction("Index");
-            //}
-            //return View(expenseEntry);
+            return View(regExpViewModel);
         }
         // POST Delete
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Delete(string entryId)
+        public IActionResult Delete(string regExpenseId)
         {
-            var regExpense = _db.RegularExpenses.Find(Convert.ToInt32(entryId));
+            var regExpense = _db.RegularExpenses.Find(Convert.ToInt32(regExpenseId));
             if (regExpense is null)
             {
                 return NotFound();
             }
             _db.RegularExpenses.Remove(regExpense);
-            _db.SaveChanges();
-            int expenseId = regExpense.ExpenseId;
-            if (!_db.RegularExpenses.Any(o => o.ExpenseId == expenseId))
-            {
-                var expense = _db.Expenses.Find(expenseId);
-                _db.Expenses.Remove(expense);
-            }
+            var expense = _db.Expenses.Find(regExpense.ExpenseId);
+            _db.Expenses.Remove(expense);
             _db.SaveChanges();
             return RedirectToAction("Index");
 
