@@ -7,17 +7,29 @@ namespace ExpensesControlApp.Helpers
     public class Today : TimeSpanOption
     {
         public override string Name { get => "Today"; }
-        public override string GetLimit(LimitParam limitParam)
+        public override void SetLimit(LimitParam limitParam)
         {
             switch (limitParam.TimeSpan)
             {
                 case TimeOption.Weekly:
-                    return (Convert.ToDouble(limitParam.Amount) / 7).ToString();
+                    Limit = Convert.ToDecimal(limitParam.Amount) / 7;
+                    break;
                 case TimeOption.Monthly:
-                    return (Convert.ToDouble(limitParam.Amount) / DateTime.DaysInMonth(DateTime.Today.Year, DateTime.Today.Month)).ToString();
+                    Limit = Convert.ToDecimal(limitParam.Amount) / DateTime.DaysInMonth(DateTime.Today.Year, DateTime.Today.Month);
+                    break;
                 default:
-                    return string.Empty;
+                    break;
             }
+        }
+        public override IEnumerable<RegExpViewModel> SetRegularExpensesList(IEnumerable<RegExpViewModel> regExpList)
+        {
+            var copyList = regExpList.ToList();
+            foreach (var regExp in copyList)
+                if (regExp.TimeSpan == TimeOption.Weekly)
+                    regExp.Amount = regExp.Amount / 7;
+                else
+                    regExp.Amount = regExp.Amount / DateTime.DaysInMonth(DateTime.Today.Year, DateTime.Today.Month);
+            return copyList;
         }
     }
 }

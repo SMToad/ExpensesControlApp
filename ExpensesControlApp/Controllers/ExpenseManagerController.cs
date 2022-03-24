@@ -69,55 +69,57 @@ namespace ExpensesControlApp.Controllers
             switch (timeSpan)
             {
                 case "today":
-                    expenseList = expenseList.Where(o => o.Date.Date == DateTime.Today);
-                    regExpList = null;
+                    expenseList = expenseList?.Where(o => o.Date.Date == DateTime.Today);
                     timeSpanOption = new Today();
                     break;
                 case "week":
-                    expenseList = expenseList.Where(o => ISOWeek.GetWeekOfYear(o.Date) == ISOWeek.GetWeekOfYear(DateTime.Today));
-                    regExpList = regExpList.Where(o => o.TimeSpan == TimeOption.Weekly);
+                    expenseList = expenseList?.Where(o => ISOWeek.GetWeekOfYear(o.Date) == ISOWeek.GetWeekOfYear(DateTime.Today));
                     timeSpanOption = new Week();
                     break;
                 case "month":
-                    expenseList = expenseList.Where(o => o.Date.Month == DateTime.Today.Month);
-                    regExpList = regExpList.Where(o => o.TimeSpan == TimeOption.Monthly);
+                    expenseList = expenseList?.Where(o => o.Date.Month == DateTime.Today.Month);
                     timeSpanOption = new Month();
                     break;
                 default:
-                    regExpList = null;
-                    timeSpanOption = new Total();
+                    timeSpanOption = new TimeSpanOption();
                     break;
             }
-            TempData["LimitAmount"] = timeSpanOption.GetLimit(limitParams);
-            TempData["LimitTimeSpan"] = timeSpanOption.Name;
-
+            timeSpanOption.SetLimit(limitParams);
+            regExpList = timeSpanOption.SetRegularExpensesList(regExpList);
+            
+            decimal total = (expenseList?.Sum(x => x.Amount) ?? 0) + (regExpList?.Sum(x => x.Amount) ?? 0);
+            ViewData["Available"] = (timeSpanOption.Limit - total).ToString("N");
+            ViewData["Total"] = (float)total;
+            ViewData["TotalString"] = total.ToString("N");
             switch (sortOrder)
             {
                 case "name":
-                    expenseList = expenseList.OrderBy(o => o.ExpenseName).ToList();
-                    regExpList = regExpList.OrderBy(o => o.ExpenseName).ToList();
+                    expenseList = expenseList?.OrderBy(o => o.ExpenseName).ToList();
+                    regExpList = regExpList?.OrderBy(o => o.ExpenseName).ToList();
                     break;
                 case "name_desc":
-                    expenseList = expenseList.OrderByDescending(o => o.ExpenseName).ToList();
-                    regExpList = regExpList.OrderByDescending(o => o.ExpenseName).ToList();
+                    expenseList = expenseList?.OrderByDescending(o => o.ExpenseName).ToList();
+                    regExpList = regExpList?.OrderByDescending(o => o.ExpenseName).ToList();
                     break;
                 case "amount":
-                    expenseList = expenseList.OrderBy(o => o.Amount).ToList();
-                    regExpList = regExpList.OrderBy(o => o.Amount).ToList();
+                    expenseList = expenseList?.OrderBy(o => o.Amount).ToList();
+                    regExpList = regExpList?.OrderBy(o => o.Amount).ToList();
                     break;
                 case "amount_desc":
-                    expenseList = expenseList.OrderByDescending(o => o.Amount).ToList();
-                    regExpList = regExpList.OrderByDescending(o => o.Amount).ToList();
+                    expenseList = expenseList?.OrderByDescending(o => o.Amount).ToList();
+                    regExpList = regExpList?.OrderByDescending(o => o.Amount).ToList();
                     break;
                 case "date":
-                    expenseList = expenseList.OrderBy(o => o.Date).ToList();
+                    expenseList = expenseList?.OrderBy(o => o.Date).ToList();
+                    regExpList = regExpList?.OrderBy(o => o.TimeSpan).ToList();
                     break;
                 default:
-                    expenseList = expenseList.OrderByDescending(o => o.Date).ToList();
+                    expenseList = expenseList?.OrderByDescending(o => o.Date).ToList();
+                    regExpList = regExpList?.OrderByDescending(o => o.TimeSpan).ToList();
                     break;
             }
 
-            return View(new ExpenseManagerViewModel() { ExpenseEntries = expenseList, RegularExpenses = regExpList, LimitParam = limitParams });
+            return View(new ExpenseManagerViewModel() { ExpenseEntries = expenseList, RegularExpenses = regExpList, TimeSpanOption = timeSpanOption });
         }
 
         public IActionResult Create()
@@ -178,6 +180,7 @@ namespace ExpensesControlApp.Controllers
             // if Expense entity was modified
             if (expenseInDb.ExpenseName != expense.ExpenseName || expenseInDb.Amount != expense.Amount)
             {
+                _db.Entry(expenseInDb).State = EntityState.Detached;
                 // update if this Expense entity isn't connected to other ExpenseEntry entities
                 if (_db.ExpenseEntries.Where(o => o.ExpenseId == expense.Id).Count() == 1)
                     _db.Expenses.Update(expense);
@@ -196,7 +199,7 @@ namespace ExpensesControlApp.Controllers
                     expenseEntry.ExpenseId = expense.Id;
                 }
             }
-            _db.Entry(expenseInDb).State = EntityState.Detached;
+            
             // update ExpenseEntry entity
             expenseEntry.Expense = expense;
             _db.ExpenseEntries.Update(expenseEntry);

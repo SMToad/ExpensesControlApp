@@ -1,4 +1,5 @@
-﻿using ExpensesControlApp.Models;
+﻿using ExpensesControlApp.Helpers;
+using ExpensesControlApp.Models;
 
 namespace ExpensesControlApp.ViewModels
 {
@@ -6,6 +7,6 @@ namespace ExpensesControlApp.ViewModels
     {
         public IEnumerable<ExpenseEntry> ExpenseEntries { get; set; }
         public IEnumerable<RegExpViewModel> RegularExpenses { get; set; }
-        public LimitParam LimitParam { get; set; }
+        public TimeSpanOption TimeSpanOption { get; set; }
     }
 }

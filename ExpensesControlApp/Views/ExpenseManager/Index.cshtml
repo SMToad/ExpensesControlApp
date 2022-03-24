@@ -1,16 +1,15 @@
 ﻿@{
     ViewData["Title"] = "Expenses";
+    ViewData["LimitAmount"] = Model.TimeSpanOption.Limit;
     bool isEntriesNotNull = Model.ExpenseEntries?.Count() > 0;
     bool isRegExpensesNotNull = Model.RegularExpenses?.Count() > 0;
-    decimal expensesSum = (Model.ExpenseEntries?.Sum(x => x.Amount) ?? 0) + (Model.RegularExpenses?.Sum(x => x.Amount) ?? 0);
-}
+ }
 
 @model  ExpensesControlApp.ViewModels.ExpenseManagerViewModel
-<div class="container p-3" id="temp">
-    
+<div class="container p-3">
     <div class="row pt-4">
         <div class="col-6">
-            <h2 id="title" class="text-dark">Expenses For @TempData["LimitTimeSpan"]</h2>
+            <h2 id="title" class="text-dark">Expenses For @Model.TimeSpanOption.Name</h2>
         </div>
 
     </div>
@@ -44,7 +43,6 @@
         <table class="table table-bordered table-hover mb-5" style="width:100%">
             <thead>
                 <tr>
-                    
                     <th>
                         <a role="button" data-list="@ViewBag.NameSortParm" class="sort-link text-decoration-none text-dark">Expense Name</a>
                     </th>
@@ -59,23 +57,21 @@
             </thead>
             <tbody>
                 @if(isRegExpensesNotNull)
-                    @foreach (var entry in Model.RegularExpenses)
+                    @foreach (var regExpense in Model.RegularExpenses)
                     {
-
-                        <tr>
-                            <td class="col-3">@entry.ExpenseName</td>
-                            <td class="col-3">@entry.Amount</td>
-                            <td class="col-3"></td>
+                        <tr class="table-secondary">
+                            <td class="col-3">@regExpense.ExpenseName</td>
+                            <td class="col-3">@regExpense.Amount.ToString("N")</td>
+                            <td class="col-3">@regExpense.TimeSpan</td>
                             <td class="col-3"></td>
                         </tr>
                     }
                 @if(isEntriesNotNull)
                     @foreach (var entry in Model.ExpenseEntries)
                     {
-
                         <tr>
                             <td class="col-3">@entry.ExpenseName</td>
-                            <td class="col-3">@entry.Amount</td>
+                            <td class="col-3">@entry.Amount.ToString("N")</td>
                             <td class="col-3">@entry.Date.ToShortDateString()</td>
                             <td class="col-3">
                                 <div class="w-100 btn-group" role="group">
@@ -116,13 +112,13 @@
                 </div>
                 <div class="col-3">
                     
-                    <p id="total" class="px-2">@expensesSum</p>
+                    <p id="total" class="px-2">@ViewData["TotalString"]</p>
                 </div>
                 <div class="avail-container col-3">
                     <p class="text-end px-2 fw-bold">Available:</p>
                 </div>
                 <div class="avail-container col-3">
-                    <p id="available" class="px-2 fw-bold"></p>
+                    <p id="available" class="px-2 fw-bold">@ViewData["Available"]</p>
                     
                 </div>
             </div>
@@ -141,7 +137,7 @@
 @section MyScripts {
     <script>
         let deleteId = -1;
-        let limitAmount = parseInt('@TempData["LimitAmount"]');
+        
         let timeSpan = '@TempData["TimeSpan"]';
         let sortOrder = '@TempData["SortOrder"]';
 
@@ -172,17 +168,17 @@
                  $("#sort-input").attr("value", sortOrder);
             });
             $(document).ready(function(){
-                let total = parseFloat($("#total").text());
+                let total = parseFloat('@ViewData["Total"]');
+               let limitAmount = parseFloat('@ViewData["LimitAmount"]');
                 if(!limitAmount) limitAmount = total;
-                let available = limitAmount - total;
                 let percentage = total * 100 / limitAmount;
                 $("#progress-bar").attr({"aria-valuenow": total, "aria-valuemax": limitAmount}).css("width", percentage + "%");
                 
                 if(timeSpan == "total")
                 {
+                    $("#title").text("Expenses");
                      $(".avail-container").hide();
                 }
-                else $("#available").text(available);
             });
     </script>
 }
