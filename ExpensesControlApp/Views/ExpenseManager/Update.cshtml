@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "Update Expense";
 }
 
@@ -11,67 +10,37 @@
         <div class="row">
             <h2 class="text-black-50 pl-3">Update Expense</h2>
         </div>
-       <div class="d-flex flex-column align-items-center">
-            
-                
-                    @*@(Html.EditorFor(m => m.Expense))*@
-                    <input asp-for="ExpenseId" hidden />
-                    <div class="col-5">
-                        <div class="input-group">
-                            <div class="col-3 input-group-prepend">
-                                <span class="input-group-text" id="addon-name">Expense Name</span>
-                            </div>
-                            <input asp-for="ExpenseName" class="form-control" aria-describedby="addon-name">
-                        </div>
-                    </div>
-                    <div class="col-5">
-                        <div class="input-group">
-                            <div class="col-3 input-group-prepend">
-                                <span class="input-group-text" id="addon-amount">Amount</span>
-                            </div>
-                            <input asp-for="Amount" class="form-control" aria-describedby="addon-amount">
-                        </div>
-                    </div>
-                    <div class="col-5">
-                        <div class="input-group">
-                            <div class="col-3 input-group-prepend">
-                                <span class="input-group-text" id="addon-date">Date</span>
-                            </div>
-                            <input id="datepicker" class="form-control" aria-describedby="addon-date">
-                            <input id="dateinput" asp-for="Date" class="form-control" aria-describedby="addon-date" hidden>
-                            <span asp-validation-for="Date" class="text-danger"></span>
-                        </div>
-                    </div>
+        <div class="d-flex flex-column align-items-center">
+            <input asp-for="ExpenseId" hidden />
+            <partial name="_ExpenseInput" for=Expense />
+            <partial name="_DateInput" for=@Model />
+        </div>
+        <div class="row my-4">
+            <div class="col-4 offset-4 row text-center">
+                <div class="col">
+                    <input id="submit" type="submit" class="btn btn-outline-success w-50" value="Update" />
                 </div>
-                <div class="row my-4">
-                    <div class="col-4 offset-4 row text-center">
-                        <div class="col">
-                            <input id="submit" type="submit" class="btn btn-outline-success w-50" value="Update"/>
-                        </div>
-                        <div class="col">
-                            <a  class="btn btn-outline-danger w-50" asp-action="Index">Cancel</a>
-                        </div>
-                    </div>
-                    
+                <div class="col">
+                    <a class="btn btn-outline-danger w-50" asp-action="Index">Cancel</a>
                 </div>
-            
-        
+            </div>
+        </div>
     </div>
 </form>
 @section MyScripts {
-    <script>
-    
-        $(document).ready(function(){
-            $("#datepicker").datepicker({
-                dateFormat: "dd.mm.yy",
-                firstDay: 1
-            });
-            let date = $("#dateinput").val().split("-").reverse().join(".");
-            $("#datepicker").val(date);
+<script>
+
+    $(document).ready(function(){
+        $("#datepicker").datepicker({
+            dateFormat: "dd.mm.yy",
+            firstDay: 1
         });
-        $("#submit").click(function(){
-            let date = $("#datepicker").val().split(".").reverse().join("-");
-            $("#dateinput").val(date);
-        });
-    </script>
+        let date = $("#dateinput").val().split("-").reverse().join(".");
+        $("#datepicker").val(date);
+    });
+    $("#submit").click(function(){
+        let date = $("#datepicker").val().split(".").reverse().join("-");
+        $("#dateinput").val(date);
+    });
+</script>
 }

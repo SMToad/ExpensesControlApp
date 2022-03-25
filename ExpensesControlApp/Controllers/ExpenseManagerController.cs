@@ -48,7 +48,9 @@ namespace ExpensesControlApp.Controllers
                                   Id = regExp.RegularExpenseId,
                                   ExpenseId = exp.Id,
                                   Expense = regExp.Expense,
-                                  TimeSpan = regExp.TimeSpan
+                                  TimeSpan = regExp.TimeSpan,
+                                  ExpenseName = exp.ExpenseName,
+                                  Amount = exp.Amount
                               }).ToList()
                                .Select(regExp => new RegExpViewModel(new RegularExpense()
                                {

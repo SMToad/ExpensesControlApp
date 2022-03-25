@@ -23,19 +23,7 @@
                             <span asp-validation-for="Amount" class="text-danger"></span>
                         </div>
                     </div>
-                    <div class="col-3 mx-5">
-                        <div class="input-group">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text" id="addon-timespan">Time Span</span>
-                            </div>
-                            <input id="timespan-input" asp-for="TimeSpan" class="form-control" aria-describedby="addon-timespan" hidden>
-                            <input type="radio" name="timespan" class="@(Model.TimeSpan == TimeOption.Weekly? "checked" : "") btn-check" value="0" id="time-option1" autocomplete="off">
-                            <label class="btn btn-outline-secondary" for="time-option1">@TimeOption.Weekly</label>
-                            <input type="radio" name="timespan" class="@(Model.TimeSpan == TimeOption.Monthly? "checked" : "") btn-check" value="1" id="time-option2" autocomplete="off">
-                            <label class="btn btn-outline-secondary" for="time-option2">@TimeOption.Monthly</label>
-
-                        </div>
-                    </div>
+                    <partial name="_TimeSpanInput" for=TimeSpan />
                 </div>
 
                 <div class="row my-4">

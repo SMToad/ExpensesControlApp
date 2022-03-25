@@ -12,5 +12,13 @@ namespace ExpensesControlApp.Models
         public virtual Expense Expense { get; set; }
         [Required]
         public int TimeSpan { get; set; }
+        public RegularExpense() { }
+        protected RegularExpense(RegularExpense regularExpense)
+        {
+            RegularExpenseId = regularExpense.RegularExpenseId;
+            ExpenseId = regularExpense.ExpenseId;
+            Expense = regularExpense.Expense;
+            TimeSpan = regularExpense.TimeSpan;
+        }
     }
 }

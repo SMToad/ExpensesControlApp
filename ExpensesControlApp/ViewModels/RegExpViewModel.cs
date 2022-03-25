@@ -3,21 +3,18 @@ using ExpensesControlApp.Models;
 
 namespace ExpensesControlApp.ViewModels
 {
-    public class RegExpViewModel
+    public class RegExpViewModel : RegularExpense
     {
-        public int RegularExpenseId { get; set; }
-        public int ExpenseId { get; set; }
         public string ExpenseName { get; set; }
         public decimal Amount { get; set; }
-        public TimeOption TimeSpan { get; set; }
+        public new TimeOption TimeSpan { get; set; }
         public RegExpViewModel() { }
-        public RegExpViewModel(RegularExpense regExpense)
+        public RegExpViewModel(RegularExpense regularExpense)
+            : base(regularExpense) 
         {
-            RegularExpenseId = regExpense.RegularExpenseId;
-            ExpenseId = regExpense.ExpenseId;
-            ExpenseName = regExpense.Expense.ExpenseName;
-            Amount = regExpense.Expense.Amount;
-            TimeSpan = (TimeOption)regExpense.TimeSpan;
+            ExpenseName = Expense.ExpenseName;
+            Amount = Expense.Amount;
+            TimeSpan = (TimeOption)base.TimeSpan;
         }
     }
 }
