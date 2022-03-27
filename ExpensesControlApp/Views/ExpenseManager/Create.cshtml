@@ -10,36 +10,34 @@
             <h2 class="text-black-50 pl-3">Add Expense</h2>
         </div>
         <div class="d-flex flex-column align-items-center">
-                    <partial name="_ExpenseInput" for=Expense />
-                    <partial name="_DateInput" for=@Model/>
-                </div>
-                <div class="row my-4">
-                    <div class="col-4 offset-4 row text-center">
-                        <div class="col">
-                            <input id="submit-create" type="submit" class="btn btn-outline-success w-50"  asp-action="Create" value="Create"/>
-                        </div>
-                        <div class="col">
-                            <a class="btn btn-outline-danger w-50" asp-action="Index">Cancel</a>
-                        </div>
-                    </div>
-                </div>
-           
-        
+            <partial name="_ExpenseInput" for=Expense />
+            <partial name="_DateInput" for=@Model />
+        </div>
+        <div class="d-flex justify-content-evenly text-center my-4">
+            <div class="col">
+                <input id="submit-create" type="submit" class="btn btn-outline-success w-50" asp-action="Create" value="Create" />
+            </div>
+            <div class="col">
+                <a class="btn btn-outline-danger w-50" asp-action="Index">Cancel</a>
+            </div>
+        </div>
+
+
     </div>
 </form>
 @section MyScripts {
-    <script>
-        $(document).ready(function (){
-            $("#datepicker").datepicker({
-                dateFormat: "dd.mm.yy",
-                firstDay: 1
-            });
+<script>
+    $(document).ready(function (){
+        $("#datepicker").datepicker({
+            dateFormat: "dd.mm.yy",
+            firstDay: 1
         });
-        $("#submit-create").click(function(){
-            let date = $("#datepicker").val().split(".").reverse().join("-");
-            $("#dateinput").val(date);
-        });
-    </script>
+    });
+    $("#submit-create").click(function(){
+        let date = $("#datepicker").val().split(".").reverse().join("-");
+        $("#dateinput").val(date);
+    });
+</script>
 }
 
 

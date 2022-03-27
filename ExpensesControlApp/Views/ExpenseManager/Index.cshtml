@@ -3,12 +3,12 @@
     ViewData["LimitAmount"] = Model.TimeSpanOption.Limit;
     bool isEntriesNotNull = Model.ExpenseEntries?.Count() > 0;
     bool isRegExpensesNotNull = Model.RegularExpenses?.Count() > 0;
- }
+}
 
-@model  ExpensesControlApp.ViewModels.ExpenseManagerViewModel
+@model ExpensesControlApp.ViewModels.ExpenseManagerViewModel
 <div class="container p-3">
     <div class="row pt-4">
-        <div class="col-6">
+        <div class="col">
             <h2 id="title" class="text-dark">Expenses For @Model.TimeSpanOption.Name</h2>
         </div>
 
@@ -37,7 +37,7 @@
         </div>
     </div>
     <br />
-    
+
     @if (isEntriesNotNull || isRegExpensesNotNull)
     {
         <table class="table table-bordered table-hover mb-5" style="width:100%">
@@ -48,15 +48,16 @@
                     </th>
                     <th>
                         <a role="button" data-list="@ViewBag.AmountSortParm" class="sort-link text-decoration-none text-dark">Amount</a>
-                   </th>
+                    </th>
 
                     <th>
                         <a role="button" data-list="@ViewBag.DateSortParm" class="sort-link text-decoration-none text-dark">Date</a>
-                   </th>
+                    </th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
-                @if(isRegExpensesNotNull)
+                @if (isRegExpensesNotNull)
                     @foreach (var regExpense in Model.RegularExpenses)
                     {
                         <tr class="table-secondary">
@@ -66,7 +67,7 @@
                             <td class="col-3"></td>
                         </tr>
                     }
-                @if(isEntriesNotNull)
+                @if (isEntriesNotNull)
                     @foreach (var entry in Model.ExpenseEntries)
                     {
                         <tr>
@@ -85,16 +86,16 @@
                             </td>
                         </tr>
                     }
-                <partial name="_ConfirmBar"/>
+                <partial name="_ConfirmBar" />
             </tbody>
         </table>
         <div id="stats-bar">
-            <div class="d-flex flex-row h4">
+            <div class="d-none d-sm-flex flex-row h4">
                 <div class="col-3">
                     <p class="text-end px-2">Total:</p>
                 </div>
                 <div class="col-3">
-                    
+
                     <p id="total" class="px-2">@ViewData["TotalString"]</p>
                 </div>
                 <div class="avail-container col-3">
@@ -102,7 +103,26 @@
                 </div>
                 <div class="avail-container col-3">
                     <p id="available" class="px-2 fw-bold">@ViewData["Available"]</p>
-                    
+                </div>
+            </div>
+
+            <div class="d-sm-none d-flex flex-column align-items-center h4">
+                <div class="row">
+                    <div class="col-6">
+                        <p class="text-end px-2">Total:</p>
+                    </div>
+                    <div class="col-6">
+
+                        <p id="total" class="px-2">@ViewData["TotalString"]</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="avail-container col-6">
+                        <p class="text-end px-2 fw-bold">Available:</p>
+                    </div>
+                    <div class="avail-container col-6">
+                        <p id="available" class="px-2 fw-bold">@ViewData["Available"]</p>
+                    </div>
                 </div>
             </div>
             <div class="progress" style="height: 5px;">
@@ -115,53 +135,53 @@
     {
         <h1>No Expenses in this Time Span</h1>
     }
-    
+
 </div>
 @section MyScripts {
-    <script>
-        let deleteId = -1;
-        
-        let timeSpan = '@TempData["TimeSpan"]';
-        let sortOrder = '@TempData["SortOrder"]';
+<script>
+    let deleteId = -1;
 
-            function hideConfirm(speed = "slow") {
-                 $("#confirm-bar").slideUp(speed);
+    let timeSpan = '@TempData["TimeSpan"]';
+    let sortOrder = '@TempData["SortOrder"]';
+
+        function hideConfirm(speed = "slow") {
+             $("#confirm-bar").slideUp(speed);
+        }
+        function getId(id) {
+            deleteId = id;
+        }
+        $(document).click(function(event){
+            var $target = $(event.target);
+            var isInside = $target.closest("#confirm-bar").length || $target.closest(".delete-btn").length;
+            if (!isInside) hideConfirm("fast");
+        });
+        $(".delete-btn").click(function(){
+             $("#confirm-bar").insertAfter($(this).closest('tr'));
+             $("#confirm-bar").slideDown("slow");
+             $("#deleteId").attr("value", deleteId);
+             deleteId = -1;
+        });
+        $(".sort-link").click(function(){
+            $("#sort-input").attr("value", $(this).data('list'));
+            $("#time-input").attr("value", timeSpan);
+            $("#form").submit();
+        });
+        $(".drop-btn").click(function(){
+             $("#time-input").attr("value", $(document.activeElement).data('list'));
+             $("#sort-input").attr("value", sortOrder);
+        });
+        $(document).ready(function(){
+            let total = parseFloat('@ViewData["Total"]');
+           let limitAmount = parseFloat('@ViewData["LimitAmount"]');
+            if(!limitAmount) limitAmount = total;
+            let percentage = total * 100 / limitAmount;
+            $("#progress-bar").attr({"aria-valuenow": total, "aria-valuemax": limitAmount}).css("width", percentage + "%");
+
+            if(timeSpan == "total")
+            {
+                $("#title").text("Expenses");
+                 $(".avail-container").hide();
             }
-            function getId(id) {
-                deleteId = id;
-            }
-            $(document).click(function(event){
-                var $target = $(event.target);
-                var isInside = $target.closest("#confirm-bar").length || $target.closest(".delete-btn").length;
-                if (!isInside) hideConfirm("fast");
-            });
-            $(".delete-btn").click(function(){
-                 $("#confirm-bar").insertAfter($(this).closest('tr'));
-                 $("#confirm-bar").slideDown("slow");
-                 $("#deleteId").attr("value", deleteId);
-                 deleteId = -1;
-            });
-            $(".sort-link").click(function(){
-                $("#sort-input").attr("value", $(this).data('list'));
-                $("#time-input").attr("value", timeSpan);
-                $("#form").submit();
-            });
-            $(".drop-btn").click(function(){
-                 $("#time-input").attr("value", $(document.activeElement).data('list'));
-                 $("#sort-input").attr("value", sortOrder);
-            });
-            $(document).ready(function(){
-                let total = parseFloat('@ViewData["Total"]');
-               let limitAmount = parseFloat('@ViewData["LimitAmount"]');
-                if(!limitAmount) limitAmount = total;
-                let percentage = total * 100 / limitAmount;
-                $("#progress-bar").attr({"aria-valuenow": total, "aria-valuemax": limitAmount}).css("width", percentage + "%");
-                
-                if(timeSpan == "total")
-                {
-                    $("#title").text("Expenses");
-                     $(".avail-container").hide();
-                }
-            });
-    </script>
+        });
+</script>
 }
