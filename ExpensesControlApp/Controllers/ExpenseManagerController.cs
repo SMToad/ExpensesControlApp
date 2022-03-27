@@ -213,9 +213,9 @@ namespace ExpensesControlApp.Controllers
         // POST Delete
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Delete(string entryId)
+        public IActionResult Delete(string deleteId)
         {
-            var expenseEntry = _db.ExpenseEntries.Find(Convert.ToInt32(entryId));
+            var expenseEntry = _db.ExpenseEntries.Find(Convert.ToInt32(deleteId));
             if (expenseEntry is null)
             {
                 return NotFound();

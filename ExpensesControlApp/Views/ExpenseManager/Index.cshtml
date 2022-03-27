@@ -85,24 +85,7 @@
                             </td>
                         </tr>
                     }
-                <tr id="confirm-bar" style="display:none;">
-                    <td colspan="3"></td>
-                    <td class="text-end">
-                        <div class="d-flex flex-row justify-content-between">
-                            <p>Please Confirm</p>
-                            <form method="post" asp-action="Delete">
-                                <input id="entryId" name="entryId" hidden />
-                                <button type="submit" class="btn btn-outline-success mx-1">
-                                    <i class="fa fa-check"></i>
-                                </button>
-                                <a class="btn btn-outline-danger mx-1" onclick="hideConfirm()">
-                                    <i class="fa fa-xmark"></i>
-                                </a>
-                            </form>
-
-                        </div>
-                    </td>
-                </tr>
+                <partial name="_ConfirmBar"/>
             </tbody>
         </table>
         <div id="stats-bar">
@@ -155,7 +138,7 @@
             $(".delete-btn").click(function(){
                  $("#confirm-bar").insertAfter($(this).closest('tr'));
                  $("#confirm-bar").slideDown("slow");
-                 $("#entryId").attr("value", deleteId);
+                 $("#deleteId").attr("value", deleteId);
                  deleteId = -1;
             });
             $(".sort-link").click(function(){
