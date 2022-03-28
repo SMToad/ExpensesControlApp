@@ -3,28 +3,30 @@
 }
 
 @model ExpensesControlApp.Models.ExpenseEntry
+<div class="container col-10">
+    <form method="post" asp-action="Update">
+        <input asp-for="EntryId" hidden />
+        <div class="border p-3 form-group">
+            <div class="row">
+                <h2 class="text-black-50 pl-3">Update Expense</h2>
+            </div>
+            <div class="row">
+                <div class="d-flex flex-column align-items-center">
+                    <div class="col my-2">
+                        <input asp-for="ExpenseId" hidden />
+                        <partial name="_ExpenseInput" for=Expense />
+                        <partial name="_DateInput" for=@Model />
+                    </div>
+                    <div class="col">
+                        <input id="submit" type="submit" class="btn btn-outline-success m-2" value="Update" />
 
-<form method="post" asp-action="Update">
-    <input asp-for="EntryId" hidden />
-    <div class="border p-3 form-group">
-        <div class="row">
-            <h2 class="text-black-50 pl-3">Update Expense</h2>
-        </div>
-        <div class="d-flex flex-column align-items-center">
-            <input asp-for="ExpenseId" hidden />
-            <partial name="_ExpenseInput" for=Expense />
-            <partial name="_DateInput" for=@Model />
-        </div>
-        <div class="d-flex justify-content-evenly text-center my-4">
-            <div class="col">
-                <input id="submit" type="submit" class="btn btn-outline-success w-50" value="Update" />
-            </div>
-            <div class="col">
-                <a class="btn btn-outline-danger w-50" asp-action="Index">Cancel</a>
+                        <a class="btn btn-outline-danger m-2" asp-action="Index">Cancel</a>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-</form>
+    </form>
+</div>
 @section MyScripts {
 <script>
 

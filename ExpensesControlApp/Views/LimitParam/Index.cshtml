@@ -4,35 +4,35 @@
 }
 
 @model ExpensesControlApp.ViewModels.LimitParam
-
-<form id="form" method="post" asp-action="Save">
-    <div class="border p-3 form-group">
-        <div class="row">
-            <h2 class="text-black-50 pl-3">Set Limit</h2>
-        </div>
-        <div class="d-flex flex-column align-items-center">
-            <div class="col-5">
-                <div class="input-group">
-                    <div class="col-3 input-group-prepend">
-                        <span class="input-group-text" id="addon-amount">Amount</span>
+<div class="container col-10">
+    <form id="form" method="post" asp-action="Save">
+        <div class="border p-3 form-group">
+            <div class="row">
+                <h2 class="text-black-50 pl-3">Set Limit</h2>
+            </div>
+            <div class="row">
+                <div class="d-flex flex-column align-items-center">
+                    <div class="col my-2">
+                        <div class="input-group">
+                            <div class="input-group-prepend w-25">
+                                <span class="input-group-text w-100" id="addon-amount">Amount</span>
+                            </div>
+                            <input asp-for="Amount" class="form-control" aria-describedby="addon-amount">
+                            <span asp-validation-for="Amount" class="text-danger"></span>
+                        </div>
+                        <partial name="_TimeSpanInput" for=TimeSpan />
                     </div>
-                    <input asp-for="Amount" class="form-control" aria-describedby="addon-amount">
-                    <span asp-validation-for="Amount" class="text-danger"></span>
+                    <div class="col">
+                        <input id="submit" type="submit" class="btn btn-outline-success m-2" value="Save" />
+
+                        <a class="btn btn-outline-danger m-2" asp-controller="ExpenseManager" asp-action="Index">Cancel</a>
+                    </div>
                 </div>
             </div>
-            <partial name="_TimeSpanInput" for=TimeSpan />
-        </div>
-        <div class="d-flex justify-content-evenly text-center my-4">
-            <div class="col">
-                <input id="submit" type="submit" class="btn btn-outline-success w-50" value="Save" />
-            </div>
-            <div class="col">
-                <a class="btn btn-outline-danger w-50" asp-controller="ExpenseManager" asp-action="Index">Cancel</a>
-            </div>
-        </div>
 
-    </div>
-</form>
+        </div>
+    </form>
+</div>
 @section MyScripts {
 <script>
 

@@ -3,7 +3,7 @@
 }
 
 @model  IEnumerable<ExpensesControlApp.ViewModels.RegExpViewModel>
-<div class="container p-3" id="temp">
+<div class="container col-10">
     
     <div class="row pt-4">
         <div class="col">
@@ -18,7 +18,9 @@
             </form>
         </div>
         <div class="col-6 text-end">
-            <a class="btn btn-outline-dark" asp-action="Create">Add new Regular Expense</a>
+            <a class="btn btn-outline-dark" asp-action="Create">
+                Add new Expense
+            </a>
         </div>
     </div>
     <br />
@@ -39,6 +41,7 @@
                     <th>
                         <a role="button" data-list="@ViewBag.TimeSortParm" class="sort-link text-decoration-none text-dark">Time Span</a>
                    </th>
+                   <th></th>
                 </tr>
             </thead>
             <tbody>

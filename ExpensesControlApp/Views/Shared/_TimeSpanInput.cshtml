@@ -1,9 +1,9 @@
 ﻿@using ExpensesControlApp.Helpers
 @model TimeOption
-<div class="col-5">
+
     <div class="input-group">
-        <div class="input-group-prepend">
-            <span class="input-group-text" id="addon-timespan">Time Span</span>
+        <div class="input-group-prepend w-25">
+            <span class="input-group-text w-100" id="addon-timespan">Span</span>
         </div>
         <input id="timespan-input" name="TimeSpan" class="form-control" aria-describedby="addon-timespan" hidden>
         <input type="radio" name="timespan" class="@(Model == null || Model != TimeOption.Weekly? "checked" : "") btn-check" value="0" id="time-option1" autocomplete="off">
@@ -12,4 +12,3 @@
         <label class="btn btn-outline-secondary" for="time-option2">@TimeOption.Monthly</label>
 
     </div>
-</div>
