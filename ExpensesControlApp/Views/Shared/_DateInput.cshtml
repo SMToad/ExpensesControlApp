@@ -1,12 +1,15 @@
 ﻿@model ExpensesControlApp.Models.ExpenseEntry
 
-    <div class="input-group">
-        <div class="input-group-prepend w-25">
-            <span class="input-group-text w-100" id="addon-date">Date</span>
-        </div>
-        <input id="datepicker" class="form-control" aria-describedby="addon-date">
-        <input id="dateinput" asp-for="Date" name="Date" class="form-control" aria-describedby="addon-date" hidden>
-        <span asp-validation-for="Date" class="text-danger"></span>
+<div class="input-group">
+    <div class="input-group-prepend w-25">
+        <span class="input-group-text w-100" id="addon-date">Date</span>
     </div>
 
-
+    @{
+        string date = "";
+        if (Model?.Date != null)
+            date = String.Join(".", Model.Date.ToShortDateString().Split("-").Reverse());
+    }
+    <input id="datepicker" name="Date" value="@date" class="form-control" aria-describedby="addon-date">
+    <span asp-validation-for="Date" class="text-danger"></span>
+</div>

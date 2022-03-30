@@ -12,13 +12,13 @@
             <div class="row">
                 <div class="d-flex flex-column align-items-center">
                     <div class="col my-2">
-                        <partial name="_ExpenseInput" for=Expense />
-                        <partial name="_DateInput" for=@Model />
+                        <partial name="_ExpenseInput" />
+                        <partial name="_DateInput" />
                     </div>
                     <div class="col">
-                    <input id="submit-create" type="submit" class="btn btn-outline-success m-2" asp-action="Create" value="Create" />
+                        <input id="submit" type="submit" class="btn btn-outline-success m-2" asp-action="Create" value="Create" />
 
-                    <a class="btn btn-outline-danger m-2" asp-action="Index">Cancel</a>
+                        <a class="btn btn-outline-danger m-2" asp-action="Index">Cancel</a>
                     </div>
                 </div>
             </div>
@@ -28,15 +28,27 @@
 </div>
 @section MyScripts {
 <script>
-    $(document).ready(function (){
+    $("#form").validate({
+        rules: {
+            ExpenseName: "required",
+            Amount: "required",
+            Date: "required"
+        },
+        messages: {
+            ExpenseName: "The name of the expense is required",
+            Amount: "The amount of the expense is required",
+            Date: "The date of the expense is required"
+        }
+    });
+    $(document).ready(function(){
         $("#datepicker").datepicker({
             dateFormat: "dd.mm.yy",
             firstDay: 1
         });
     });
-    $("#submit-create").click(function(){
+    $("#submit").click(function(){
         let date = $("#datepicker").val().split(".").reverse().join("-");
-        $("#dateinput").val(date);
+        $("#datepicker").val(date);
     });
 </script>
 }

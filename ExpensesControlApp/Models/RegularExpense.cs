@@ -10,7 +10,8 @@ namespace ExpensesControlApp.Models
         [ForeignKey("Expense")]
         public int ExpenseId { get; set; }
         public virtual Expense Expense { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Time span of the expense is required")]
+        [Range(0,1)]
         public int TimeSpan { get; set; }
         public RegularExpense() { }
         protected RegularExpense(RegularExpense regularExpense)

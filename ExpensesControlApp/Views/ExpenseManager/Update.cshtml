@@ -14,8 +14,8 @@
                 <div class="d-flex flex-column align-items-center">
                     <div class="col my-2">
                         <input asp-for="ExpenseId" hidden />
-                        <partial name="_ExpenseInput" for=Expense />
-                        <partial name="_DateInput" for=@Model />
+                        <partial name="_ExpenseInput" for="Expense" />
+                        <partial name="_DateInput" />
                     </div>
                     <div class="col">
                         <input id="submit" type="submit" class="btn btn-outline-success m-2" value="Update" />
@@ -31,16 +31,26 @@
 <script>
 
     $(document).ready(function(){
-        $("#datepicker").datepicker({
-            dateFormat: "dd.mm.yy",
-            firstDay: 1
-        });
-        let date = $("#dateinput").val().split("-").reverse().join(".");
-        $("#datepicker").val(date);
-    });
-    $("#submit").click(function(){
-        let date = $("#datepicker").val().split(".").reverse().join("-");
-        $("#dateinput").val(date);
-    });
+        $("form").validate({
+         rules: {
+             ExpenseName: "required",
+             Amount: "required",
+             Date: "required"
+         },
+         messages: {
+             ExpenseName: "The name of the expense is required",
+             Amount: "The amount of the expense is required",
+             Date: "The date of the expense is required"
+         }
+     });
+         $("#datepicker").datepicker({
+             dateFormat: "dd.mm.yy",
+             firstDay: 1
+         });
+     });
+     $("#submit").click(function(){
+         let date = $("#datepicker").val().split(".").reverse().join("-");
+         $("#datepicker").val(date);
+     });
 </script>
 }
