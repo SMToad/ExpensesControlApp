@@ -16,8 +16,12 @@
                 <div class="d-flex flex-column align-items-center">
                     <div class="col my-2">
                         <input asp-for="ExpenseId" hidden />
-                        <partial name="_ExpenseInput" for="Expense"/>
+                        <partial name="_ExpenseInput" for="Expense" />
+                        @{
+                            TempData["TimeSpanInputValue"] = (int)Model.TimeSpan;
+                        }
                         <partial name="_TimeSpanInput" for=TimeSpan />
+
                     </div>
                     <div class="col">
                         <input id="submit" type="submit" class="btn btn-outline-success m-2" value="Update" />
@@ -32,11 +36,9 @@
 </div>
 @section MyScripts {
 <script>
-    $('input[name="timespan"]').click(function(){
-        $("#timespan-input").val($('input[name="timespan"]:checked').val());
-    });
-    $(document).ready(function(){
-        $(".checked").prop("checked", true);
-    });
+    var timeSpan = '@TempData["TimeSpanInputValue"]';
+    validateForm();
+    convertTimeSpanInput(timeSpan);
+
 </script>
 }

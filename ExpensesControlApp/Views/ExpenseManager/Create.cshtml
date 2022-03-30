@@ -28,28 +28,11 @@
 </div>
 @section MyScripts {
 <script>
-    $("#form").validate({
-        rules: {
-            ExpenseName: "required",
-            Amount: "required",
-            Date: "required"
-        },
-        messages: {
-            ExpenseName: "The name of the expense is required",
-            Amount: "The amount of the expense is required",
-            Date: "The date of the expense is required"
-        }
-    });
-    $(document).ready(function(){
-        $("#datepicker").datepicker({
-            dateFormat: "dd.mm.yy",
-            firstDay: 1
-        });
-    });
-    $("#submit").click(function(){
-        let date = $("#datepicker").val().split(".").reverse().join("-");
-        $("#datepicker").val(date);
-    });
+    validateForm();
+    
+        setUpDatePicker();
+    
+    submitDatePicker();
 </script>
 }
 

@@ -118,8 +118,8 @@ namespace ExpensesControlApp.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Update(RegExpViewModel regExpViewModel)
         {
-            if (ModelState.IsValid)
-            {
+            //if (ModelState.IsValid)
+            //{
                 var expense = new Expense()
                 {
                     Id = regExpViewModel.ExpenseId,
@@ -138,8 +138,8 @@ namespace ExpensesControlApp.Controllers
                 _db.RegularExpenses.Update(regExpense);
                 _db.SaveChanges();
                 return RedirectToAction("Index");
-            }
-            return View(regExpViewModel);
+            //}
+            //return View(regExpViewModel);
         }
         // POST Delete
         [HttpPost]

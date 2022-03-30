@@ -20,6 +20,9 @@
                             <input asp-for="Amount" name="Amount" class="form-control" aria-describedby="addon-amount">
                             <span asp-validation-for="Amount" class="text-danger"></span>
                         </div>
+                        @{
+                            TempData["TimeSpanInputValue"] = (int)Model.TimeSpan;
+                        }
                         <partial name="_TimeSpanInput" for="TimeSpan" />
                     </div>
                     <div class="col">
@@ -35,13 +38,9 @@
 </div>
 @section MyScripts {
 <script>
-
-    $('input[name="timespan"]').click(function(){
-        $("#timespan-input").val($('input[name="timespan"]:checked').val());
-    });
-    $(document).ready(function(){
-        $(".checked").prop("checked", true);
-    });
+    var timeSpan = '@TempData["TimeSpanInputValue"]';
+    validateForm();
+    convertTimeSpanInput(timeSpan);
 </script>
 
 }

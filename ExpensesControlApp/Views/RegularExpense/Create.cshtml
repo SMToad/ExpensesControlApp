@@ -15,6 +15,7 @@
                     <div class="col my-2">
                         <partial name="_ExpenseInput" for="Expense"/>
                         <partial name="_TimeSpanInput" for=TimeSpan/>
+                        
                     </div>
                     <div class="col">
                         <input id="submit" type="submit" class="btn btn-outline-success m-2" asp-action="Create" value="Create" />
@@ -29,9 +30,7 @@
 </div>
 @section MyScripts {
 <script>
-    $('input[name="timespan"]').click(function(){
-         $("#timespan-input").val($('input[name="timespan"]:checked').val());
-     });
+    validateForm();
 </script>
 }
 
