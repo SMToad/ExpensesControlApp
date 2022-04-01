@@ -4,7 +4,7 @@
 
 @model ExpensesControlApp.Models.ExpenseEntry
 <div class="container col-10">
-    <form method="post" asp-action="Update">
+    <form method="post" class="validate-form" asp-action="Update">
         <input asp-for="EntryId" hidden />
         <div class="border p-3 form-group">
             <div class="row">

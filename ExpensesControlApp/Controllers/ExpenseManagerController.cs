@@ -68,6 +68,7 @@ namespace ExpensesControlApp.Controllers
             ViewBag.NameSortParm = sortOrder == "name" ? "name_desc" : "name";
             ViewBag.AmountSortParm = sortOrder == "amount" ? "amount_desc" : "amount";
 
+            string availableContainerClass = "";
             switch (timeSpan)
             {
                 case "today":
@@ -84,15 +85,19 @@ namespace ExpensesControlApp.Controllers
                     break;
                 default:
                     timeSpanOption = new TimeSpanOption();
+                    availableContainerClass = "d-none";
                     break;
             }
             timeSpanOption.SetLimit(limitParams);
             regExpList = timeSpanOption.SetRegularExpensesList(regExpList);
             
             decimal total = (expenseList?.Sum(x => x.Amount) ?? 0) + (regExpList?.Sum(x => x.Amount) ?? 0);
+            ViewData["AvailableContainerClass"] = availableContainerClass;
             ViewData["Available"] = (timeSpanOption.Limit - total).ToString("N");
             ViewData["Total"] = (float)total;
             ViewData["TotalString"] = total.ToString("N");
+            ViewData["LimitAmount"] = timeSpanOption.Limit;
+            ViewData["TimeSpanLabel"] = timeSpanOption.Label;
             switch (sortOrder)
             {
                 case "name":
@@ -121,7 +126,7 @@ namespace ExpensesControlApp.Controllers
                     break;
             }
 
-            return View(new ExpenseManagerViewModel() { ExpenseEntries = expenseList, RegularExpenses = regExpList, TimeSpanOption = timeSpanOption });
+            return View(new ExpenseManagerViewModel() { ExpenseEntries = expenseList, RegularExpenses = regExpList });
         }
 
         public IActionResult Create()
@@ -179,10 +184,11 @@ namespace ExpensesControlApp.Controllers
                 Amount = expenseEntry.Amount
             };
             var expenseInDb = _db.Expenses.Find(expense.Id);
+            _db.Entry(expenseInDb).State = EntityState.Detached;
             // if Expense entity was modified
             if (expenseInDb.ExpenseName != expense.ExpenseName || expenseInDb.Amount != expense.Amount)
             {
-                _db.Entry(expenseInDb).State = EntityState.Detached;
+                
                 // update if this Expense entity isn't connected to other ExpenseEntry entities
                 if (_db.ExpenseEntries.Where(o => o.ExpenseId == expense.Id).Count() == 1)
                     _db.Expenses.Update(expense);

@@ -5,7 +5,7 @@ namespace ExpensesControlApp.Helpers
 {
     public class TimeSpanOption
     {
-        public virtual string Name { get => ""; }
+        public virtual string Label { get => "Expenses"; }
         public virtual decimal Limit { get; internal set; }
         public virtual void SetLimit(LimitParam limitParam)
         {
@@ -15,6 +15,7 @@ namespace ExpensesControlApp.Helpers
         {
             return null;
         }
+        
     }
     
 }

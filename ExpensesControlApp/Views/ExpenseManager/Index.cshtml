@@ -1,6 +1,5 @@
 ﻿@{
     ViewData["Title"] = "Expenses";
-    ViewData["LimitAmount"] = Model.TimeSpanOption.Limit;
     bool isEntriesNotNull = Model.ExpenseEntries?.Count() > 0;
     bool isRegExpensesNotNull = Model.RegularExpenses?.Count() > 0;
 }
@@ -9,7 +8,7 @@
 <div class="container col-10">
     <div class="row pt-4">
         <div class="col">
-            <h2 id="title" class="text-dark">Expenses For @Model.TimeSpanOption.Name</h2>
+            <h2 id="title" class="text-dark">@ViewData["TimeSpanLabel"]</h2>
         </div>
 
     </div>
@@ -79,7 +78,7 @@
                                     <a class="btn btn-outline-success mx-1" asp-route-entryId="@entry.EntryId" asp-action="Update">
                                         <i class="fa fa-pen"></i>
                                     </a>
-                                    <a class="delete-btn btn btn-outline-danger mx-1" onclick="getId(@entry.EntryId)">
+                                    <a class="delete-btn btn btn-outline-danger mx-1" data-list="@entry.EntryId">
                                         <i class="fa fa-trash-can"></i>
                                     </a>
                                 </div>
@@ -98,10 +97,10 @@
 
                     <p id="total" class="px-2">@ViewData["TotalString"]</p>
                 </div>
-                <div class="avail-container col-3">
+                <div class="col-3 @(ViewData["AvailableContainerClass"])">
                     <p class="text-end px-2 fw-bold">Available:</p>
                 </div>
-                <div class="avail-container col-3">
+                <div class="col-3 @(ViewData["AvailableContainerClass"])">
                     <p id="available" class="px-2 fw-bold">@ViewData["Available"]</p>
                 </div>
             </div>
@@ -116,16 +115,16 @@
                         <p id="total" class="px-2">@ViewData["TotalString"]</p>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="avail-container col-6">
+                <div class="row @(ViewData["AvailableContainerClass"])">
+                    <div class="col-6">
                         <p class="text-end px-2 fw-bold">Available:</p>
                     </div>
-                    <div class="avail-container col-6">
+                    <div class="col-6">
                         <p id="available" class="px-2 fw-bold">@ViewData["Available"]</p>
                     </div>
                 </div>
             </div>
-            <div class="progress" style="height: 5px;">
+            <div class="progress mb-2" style="height: 5px;">
                 <div id="progress-bar" class="progress-bar bg-dark" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
             </div>
         </div>
@@ -139,49 +138,40 @@
 </div>
 @section MyScripts {
 <script>
-    let deleteId = -1;
-
     let timeSpan = '@TempData["TimeSpan"]';
     let sortOrder = '@TempData["SortOrder"]';
-
-        function hideConfirm(speed = "slow") {
-             $("#confirm-bar").slideUp(speed);
-        }
-        function getId(id) {
-            deleteId = id;
-        }
-        $(document).click(function(event){
-            var $target = $(event.target);
-            var isInside = $target.closest("#confirm-bar").length || $target.closest(".delete-btn").length;
-            if (!isInside) hideConfirm("fast");
-        });
-        $(".delete-btn").click(function(){
-             $("#confirm-bar").insertAfter($(this).closest('tr'));
-             $("#confirm-bar").slideDown("slow");
-             $("#deleteId").attr("value", deleteId);
-             deleteId = -1;
-        });
-        $(".sort-link").click(function(){
-            $("#sort-input").attr("value", $(this).data('list'));
-            $("#time-input").attr("value", timeSpan);
-            $("#form").submit();
-        });
-        $(".drop-btn").click(function(){
-             $("#time-input").attr("value", $(document.activeElement).data('list'));
-             $("#sort-input").attr("value", sortOrder);
-        });
-        $(document).ready(function(){
+    function hideConfirmBar(speed = "slow") {
+        $("#confirm-bar").slideUp(speed);
+    }
+    $(document).click(function (event) {
+        var $target = $(event.target);
+        var isInside = $target.closest("#confirm-bar").length || $target.closest(".delete-btn").length;
+        if (!isInside) $("#confirm-bar").slideUp(speed);
+    });
+    $(".delete-btn").click(function () {
+        $("#confirm-bar").insertAfter($(this).closest('tr'));
+        $("#confirm-bar").slideDown("slow");
+        $(".deleteId").attr("value", $(this).data('list'));
+    });
+    $(".sort-link").click(function () {
+        $("#sort-input").attr("value", $(this).data('list'));
+        $("#time-input").attr("value", timeSpan);
+        $("#form").submit();
+    });
+    $(".drop-btn").click(function () {
+        $("#time-input").attr("value", $(document.activeElement).data('list'));
+        $("#sort-input").attr("value", sortOrder);
+    });
+    $(document).ready(function () {
+        if (timeSpan != "total") {
             let total = parseFloat('@ViewData["Total"]');
-           let limitAmount = parseFloat('@ViewData["LimitAmount"]');
-            if(!limitAmount) limitAmount = total;
+            let limitAmount = parseFloat('@ViewData["LimitAmount"]');
+            if (!limitAmount) limitAmount = total;
             let percentage = total * 100 / limitAmount;
-            $("#progress-bar").attr({"aria-valuenow": total, "aria-valuemax": limitAmount}).css("width", percentage + "%");
+            $("#progress-bar").attr({ "aria-valuenow": total, "aria-valuemax": limitAmount }).css("width", percentage + "%");
 
-            if(timeSpan == "total")
-            {
-                $("#title").text("Expenses");
-                 $(".avail-container").hide();
-            }
-        });
+
+        }
+    });
 </script>
 }

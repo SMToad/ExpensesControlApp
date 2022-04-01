@@ -6,7 +6,7 @@ namespace ExpensesControlApp.Helpers
 {
     public class Today : TimeSpanOption
     {
-        public override string Name { get => "Today"; }
+        public override string Label { get => base.Label + " for today"; }
         public override void SetLimit(LimitParam limitParam)
         {
             switch (limitParam.TimeSpan)

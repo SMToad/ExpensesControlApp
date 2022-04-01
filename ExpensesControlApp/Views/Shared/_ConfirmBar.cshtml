@@ -4,7 +4,7 @@
         <div class="d-none d-lg-flex flex-row justify-content-between">
             <p>Please Confirm</p>
             <form method="post" asp-action="Delete">
-                <input id="deleteId" name="deleteId" hidden />
+                <input class="deleteId" name="deleteId" hidden />
                 <button type="submit" class="btn btn-outline-success mx-1">
                     <i class="fa fa-check"></i>
                 </button>
@@ -18,11 +18,11 @@
             <p>Please Confirm</p>
             <div class="row">
                 <form method="post" asp-action="Delete">
-                    <input id="deleteId" name="deleteId" hidden />
+                    <input class="deleteId" name="deleteId" hidden />
                     <button type="submit" class="btn btn-outline-success mx-1">
                         <i class="fa fa-check"></i>
                     </button>
-                    <a class="btn btn-outline-danger mx-1" onclick="hideConfirm()">
+                    <a class="btn btn-outline-danger mx-1" onclick="hideConfirmBar()">
                         <i class="fa fa-xmark"></i>
                     </a>
                 </form>

@@ -4,7 +4,7 @@ namespace ExpensesControlApp.Helpers
 {
     public class Month : TimeSpanOption
     {
-        public override string Name { get => "This Month"; }
+        public override string Label { get => base.Label + " for this Month"; }
         public override void SetLimit(LimitParam limitParam)
         {
             switch (limitParam.TimeSpan)

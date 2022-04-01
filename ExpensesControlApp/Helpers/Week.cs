@@ -5,7 +5,7 @@ namespace ExpensesControlApp.Helpers
 {
     public class Week : TimeSpanOption
     {
-        public override string Name { get => "This Week"; }
+        public override string Label { get => base.Label + " for this Week"; }
         public override void SetLimit(LimitParam limitParam)
         {
             switch (limitParam.TimeSpan)

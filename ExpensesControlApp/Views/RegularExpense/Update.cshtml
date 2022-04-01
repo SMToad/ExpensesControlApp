@@ -6,7 +6,7 @@
 
 @model ExpensesControlApp.ViewModels.RegExpViewModel
 <div class="container col-10">
-    <form method="post" asp-action="Update">
+    <form method="post" class="validate-form" asp-action="Update">
         <input asp-for="RegularExpenseId" hidden />
         <div class="border p-3 form-group">
             <div class="row">

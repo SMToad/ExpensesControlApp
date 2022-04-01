@@ -1,5 +1,6 @@
 ﻿function validateForm() {
-    $("form").validate({
+    $(".validate-form").validate({
+        errorElement: "span",
         rules: {
             ExpenseName: "required",
             Amount: "required",
@@ -34,3 +35,4 @@ function submitDatePicker() {
         $("#datepicker").val(date);
     });
 }
+

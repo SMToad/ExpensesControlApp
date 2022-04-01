@@ -57,7 +57,7 @@
                                 <a class="btn btn-outline-success mx-1" asp-route-regExpenseId="@regExpense.RegularExpenseId" asp-action="Update">
                                     <i class="fa fa-pen"></i>
                                 </a>
-                                <a class="delete-btn btn btn-outline-danger mx-1" onclick="getId(@regExpense.RegularExpenseId)">
+                                <a class="delete-btn btn btn-outline-danger mx-1" data-list="@regExpense.RegularExpenseId">
                                     <i class="fa fa-trash-can"></i>
                                 </a>
                             </div>
@@ -76,29 +76,24 @@
 </div>
 @section MyScripts {
     <script>
-        let deleteId = -1;
+        
         let sortOrder = '@TempData["SortOrder"]';
-
-            function hideConfirm(speed = "slow") {
-                 $("#confirm-bar").slideUp(speed);
-            }
-            function getId(id) {
-                deleteId = id;
-            }
-            $(document).click(function(event){
-                var $target = $(event.target);
-                var isInside = $target.closest("#confirm-bar").length || $target.closest(".delete-btn").length;
-                if (!isInside) hideConfirm("fast");
-            });
-            $(".delete-btn").click(function(){
-                 $("#confirm-bar").insertAfter($(this).closest('tr'));
-                 $("#confirm-bar").slideDown("slow");
-                 $("#deleteId").attr("value", deleteId);
-                 deleteId = -1;
-            });
-            $(".sort-link").click(function(){
-                $("#sort-input").attr("value", $(this).data('list'));
-                $("#form").submit();
-            });
+        function hideConfirmBar(speed = "slow") {
+            $("#confirm-bar").slideUp(speed);
+        }
+        $(document).click(function (event) {
+            var $target = $(event.target);
+            var isInside = $target.closest("#confirm-bar").length || $target.closest(".delete-btn").length;
+            if (!isInside) hideConfirmBar("fast");
+        });
+        $(".delete-btn").click(function () {
+            $("#confirm-bar").insertAfter($(this).closest('tr'));
+            $("#confirm-bar").slideDown("slow");
+            $(".deleteId").attr("value", $(this).data('list'));
+        });
+        $(".sort-link").click(function () {
+            $("#sort-input").attr("value", $(this).data('list'));
+            $("#form").submit();
+        });
     </script>
 }

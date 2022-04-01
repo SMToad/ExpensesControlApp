@@ -7,6 +7,5 @@ namespace ExpensesControlApp.ViewModels
     {
         public IEnumerable<ExpenseEntry> ExpenseEntries { get; set; }
         public IEnumerable<RegExpViewModel> RegularExpenses { get; set; }
-        public TimeSpanOption TimeSpanOption { get; set; }
     }
 }
