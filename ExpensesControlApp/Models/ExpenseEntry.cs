@@ -3,12 +3,14 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ExpensesControlApp.Models
 {
+    [Bind(Exclude="ExpenseId")]
     public class ExpenseEntry
     {
         [Key]
         public int EntryId { get; set; }
 
         [ForeignKey("Expense")]
+        
         public int ExpenseId { get; set; }
         public virtual Expense Expense { get; set; }
         [Required(ErrorMessage = "The date of the expense is required")]

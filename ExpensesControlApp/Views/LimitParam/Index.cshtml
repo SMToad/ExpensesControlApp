@@ -18,8 +18,8 @@
                                 <span class="input-group-text w-100" id="addon-amount">Amount</span>
                             </div>
                             <input asp-for="Amount" name="Amount" class="form-control" aria-describedby="addon-amount">
-                            <span asp-validation-for="Amount" class="text-danger"></span>
                         </div>
+                         <label for="Amount" class="validation_error_message text-danger"></label>
                         @{
                             TempData["TimeSpanInputValue"] = (int)Model.TimeSpan;
                         }

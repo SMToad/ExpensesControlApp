@@ -11,5 +11,5 @@
             date = String.Join(".", Model.Date.ToShortDateString().Split("-").Reverse());
     }
     <input id="datepicker" name="Date" value="@date" class="form-control" aria-describedby="addon-date">
-    <span asp-validation-for="Date" class="text-danger"></span>
-</div>
+</div> 
+<label for="Date" class="validation_error_message text-danger"></label>
