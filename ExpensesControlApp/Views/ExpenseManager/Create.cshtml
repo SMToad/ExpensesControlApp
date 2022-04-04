@@ -2,7 +2,7 @@
     ViewData["Title"] = "Add Expense";
 }
 
-@model ExpensesControlApp.Models.ExpenseEntry
+@model ExpensesControlApp.ViewModels.ExpenseEntryVM
 <div class="container col-10">
     <form id="form" class="validate-form" method="post">
         <div class="border p-3 form-group">
@@ -12,8 +12,7 @@
             <div class="row">
                 <div class="d-flex flex-column align-items-center">
                     <div class="col my-2">
-                        <partial name="_ExpenseInput" />
-                        <partial name="_DateInput" />
+                        <partial name="_ExpenseEntryVMInput" />
                     </div>
                     <div class="col">
                         <input id="submit" type="submit" class="btn btn-outline-success m-2" asp-action="Create" value="Create" />
@@ -29,10 +28,7 @@
 @section MyScripts {
 <script>
     validateForm();
-    
-        setUpDatePicker();
-    
-    submitDatePicker();
+    setUpDatePicker();
 </script>
 }
 

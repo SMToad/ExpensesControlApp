@@ -4,7 +4,7 @@
     ViewData["Title"] = "Update Regular Expense";
 }
 
-@model ExpensesControlApp.ViewModels.RegExpViewModel
+@model ExpensesControlApp.ViewModels.RegularExpenseVM
 <div class="container col-10">
     <form method="post" class="validate-form" asp-action="Update">
         <input asp-for="RegularExpenseId" hidden />
@@ -16,11 +16,11 @@
                 <div class="d-flex flex-column align-items-center">
                     <div class="col my-2">
                         <input asp-for="ExpenseId" hidden />
-                        <partial name="_ExpenseInput" for="Expense" />
                         @{
                             TempData["TimeSpanInputValue"] = (int)Model.TimeSpan;
                         }
-                        <partial name="_TimeSpanInput" for=TimeSpan />
+                        <partial name="_RegularExpenseVMInput" />
+                        
 
                     </div>
                     <div class="col">

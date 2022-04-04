@@ -13,13 +13,13 @@ namespace ExpensesControlApp.Helpers
                     Limit = Convert.ToDecimal(limitParam.Amount) / 7 * DateTime.DaysInMonth(DateTime.Today.Year, DateTime.Today.Month);
                     break;
                 case TimeOption.Monthly:
-                    Limit = limitParam.Amount;
+                    Limit = (decimal)limitParam.Amount;
                     break;
                 default:
                     break;
             }
         }
-        public override IEnumerable<RegExpViewModel> SetRegularExpensesList(IEnumerable<RegExpViewModel> regExpList)
+        public override IEnumerable<RegularExpenseVM> SetRegularExpensesList(IEnumerable<RegularExpenseVM> regExpList)
         {
             var copyList = regExpList.ToList();
             foreach (var regExp in copyList.Where(x => x.TimeSpan == TimeOption.Weekly))

@@ -1,34 +1,45 @@
 ﻿function validateForm() {
+    //$.validator.addMethod(
+    //    "pattern",
+    //    function (value, element, regexp) {
+    //        var re = new Reg(regexp);
+    //        return this.optional(element) || re.test(value);
+    //    }
+    //);
     $(".validate-form").validate({
         rules: {
             ExpenseName: {
                 required: true,
+                pattern: /^[a-zA-Z]+$/,
                 rangelength: [3, 15]
+                
             },
             Amount: {
                 required: true,
-                number: true,
+                pattern: /^[0-9]+(,[0-9]{1,3})?$/,
                 min: 0.01
+                
             },
             Date: {
-                required: true,
-                dateISO: true
+                required: true
             },
             TimeSpan: "required"
         },
         messages: {
             ExpenseName: {
-                required: "The name of the expense is required",
-                rangelength: "Name length should be in range [3,15]"
+                required: "The Name of the expense is required",
+                pattern: "The Name should only consist of letters",
+                rangelength: "The Name should be at least 3 characters long"
+                
             },
             Amount: {
-                required: "The amount of the expense is required",
-                number: "Amount should only consist of numbers",
-                min: "Amount should be more than zero"
+                required: "The Amount of the expense is required",
+                pattern: "The Amount should be numeric and have up to 3 digits after the \",\"",
+                min: "The Amount should be greater than zero"
+                
             },
             Date: {
-                required: "The date of the expense is required",
-                dateISO: "Date format should be: DD.MM.YYYY"
+                required: "The Date of the expense is required"
             },
             TimeSpan: "Time span of the expense is required"
         },
@@ -52,7 +63,6 @@ function convertTimeSpanInput(timeSpan) {
 }
 function setUpDatePicker() {
     $(document).ready(function () {
-
         $("#datepicker").datepicker({
             dateFormat: "dd.mm.yy",
             firstDay: 1

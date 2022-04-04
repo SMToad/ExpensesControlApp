@@ -1,10 +1,10 @@
 ﻿@{
     ViewData["Title"] = "Expenses";
-    bool isEntriesNotNull = Model.ExpenseEntries?.Count() > 0;
-    bool isRegExpensesNotNull = Model.RegularExpenses?.Count() > 0;
+    bool isEntriesNotNull = Model.ExpenseEntryVMs?.Count() > 0;
+    bool isRegExpensesNotNull = Model.RegularExpenseVMs?.Count() > 0;
 }
 
-@model ExpensesControlApp.ViewModels.ExpenseManagerViewModel
+@model ExpensesControlApp.ViewModels.ExpenseManagerVM
 <div class="container col-10">
     <div class="row pt-4">
         <div class="col">
@@ -57,21 +57,21 @@
             </thead>
             <tbody>
                 @if (isRegExpensesNotNull)
-                    @foreach (var regExpense in Model.RegularExpenses)
+                    @foreach (var regExpense in Model.RegularExpenseVMs)
                     {
                         <tr class="table-secondary">
                             <td class="col-3">@regExpense.ExpenseName</td>
-                            <td class="col-3">@regExpense.Amount.ToString("N")</td>
+                            <td class="col-3">@regExpense.Amount?.ToString("N")</td>
                             <td class="col-3">@regExpense.TimeSpan</td>
                             <td class="col-3"></td>
                         </tr>
                     }
                 @if (isEntriesNotNull)
-                    @foreach (var entry in Model.ExpenseEntries)
+                    @foreach (var entry in Model.ExpenseEntryVMs)
                     {
                         <tr>
                             <td class="col-3">@entry.ExpenseName</td>
-                            <td class="col-3">@entry.Amount.ToString("N")</td>
+                            <td class="col-3">@entry.Amount?.ToString("N")</td>
                             <td class="col-3">@entry.Date.ToShortDateString()</td>
                             <td class="col-3">
                                 <div class="w-100 btn-group" role="group">

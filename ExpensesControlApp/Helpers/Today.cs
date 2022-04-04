@@ -21,7 +21,7 @@ namespace ExpensesControlApp.Helpers
                     break;
             }
         }
-        public override IEnumerable<RegExpViewModel> SetRegularExpensesList(IEnumerable<RegExpViewModel> regExpList)
+        public override IEnumerable<RegularExpenseVM> SetRegularExpensesList(IEnumerable<RegularExpenseVM> regExpList)
         {
             var copyList = regExpList.ToList();
             foreach (var regExp in copyList)

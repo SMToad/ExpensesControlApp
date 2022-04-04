@@ -11,7 +11,7 @@ namespace ExpensesControlApp.Helpers
         {
             Limit = 0;
         }
-        public virtual IEnumerable<RegExpViewModel> SetRegularExpensesList(IEnumerable<RegExpViewModel> regExpList)
+        public virtual IEnumerable<RegularExpenseVM> SetRegularExpensesList(IEnumerable<RegularExpenseVM> regExpList)
         {
             return null;
         }

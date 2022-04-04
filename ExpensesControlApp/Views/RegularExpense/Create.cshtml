@@ -3,7 +3,7 @@
     ViewData["Title"] = "Add Regular Expense";
 }
 
-@model ExpensesControlApp.ViewModels.RegExpViewModel
+@model ExpensesControlApp.ViewModels.RegularExpenseVM
 <div class="container col-10">
     <form id="form" class="validate-form" method="post">
         <div class="border p-3 form-group">
@@ -13,8 +13,7 @@
             <div class="row">
                 <div class="d-flex flex-column align-items-center">
                     <div class="col my-2">
-                        <partial name="_ExpenseInput" for="Expense"/>
-                        <partial name="_TimeSpanInput" for=TimeSpan/>
+                        <partial name="_RegularExpenseVMInput" />
                         
                     </div>
                     <div class="col">

@@ -20,7 +20,7 @@ namespace ExpensesControlApp.Controllers
         public IActionResult Index(string? timeSpan, string? sortOrder)
         {
             // expense list for the ViewModel
-            var expenseList = (from exp in _db.Expenses
+            var expEntryList = (from exp in _db.Expenses
                                join expEntry in _db.ExpenseEntries
                                on exp.Id equals expEntry.ExpenseId
                                select new
@@ -32,7 +32,7 @@ namespace ExpensesControlApp.Controllers
                                    Date = expEntry.Date
                                   
                                }).ToList()
-                               .Select(entry => new ExpenseEntry()
+                               .Select(entry => new ExpenseEntryVM()
                                {
                                    EntryId = entry.Id,
                                    ExpenseId = entry.ExpenseId,
@@ -47,18 +47,19 @@ namespace ExpensesControlApp.Controllers
                               {
                                   Id = regExp.RegularExpenseId,
                                   ExpenseId = exp.Id,
-                                  Expense = regExp.Expense,
-                                  TimeSpan = regExp.TimeSpan,
                                   ExpenseName = exp.ExpenseName,
-                                  Amount = exp.Amount
+                                  Amount = exp.Amount,
+                                  TimeSpan = regExp.TimeSpan
+                                  
                               }).ToList()
-                               .Select(regExp => new RegExpViewModel(new RegularExpense()
+                               .Select(regExp => new RegularExpenseVM()
                                {
                                    RegularExpenseId = regExp.Id,
                                    ExpenseId = regExp.ExpenseId,
-                                   Expense = regExp.Expense,
-                                   TimeSpan = regExp.TimeSpan
-                               }));
+                                   ExpenseName = regExp.ExpenseName,
+                                   Amount = regExp.Amount,
+                                   TimeSpan = (TimeOption)regExp.TimeSpan
+                               });
             LimitParam limitParams = new LimitParam(_db.Params);
             TempData["TimeSpan"] = timeSpan ?? "total";
             TempData["SortOrder"] = sortOrder ?? "date_desc";
@@ -72,15 +73,15 @@ namespace ExpensesControlApp.Controllers
             switch (timeSpan)
             {
                 case "today":
-                    expenseList = expenseList?.Where(o => o.Date.Date == DateTime.Today);
+                    expEntryList = expEntryList?.Where(o => o.Date.Date == DateTime.Today);
                     timeSpanOption = new Today();
                     break;
                 case "week":
-                    expenseList = expenseList?.Where(o => ISOWeek.GetWeekOfYear(o.Date) == ISOWeek.GetWeekOfYear(DateTime.Today));
+                    expEntryList = expEntryList?.Where(o => ISOWeek.GetWeekOfYear(o.Date) == ISOWeek.GetWeekOfYear(DateTime.Today));
                     timeSpanOption = new Week();
                     break;
                 case "month":
-                    expenseList = expenseList?.Where(o => o.Date.Month == DateTime.Today.Month);
+                    expEntryList = expEntryList?.Where(o => o.Date.Month == DateTime.Today.Month);
                     timeSpanOption = new Month();
                     break;
                 default:
@@ -91,7 +92,7 @@ namespace ExpensesControlApp.Controllers
             timeSpanOption.SetLimit(limitParams);
             regExpList = timeSpanOption.SetRegularExpensesList(regExpList);
             
-            decimal total = (expenseList?.Sum(x => x.Amount) ?? 0) + (regExpList?.Sum(x => x.Amount) ?? 0);
+            decimal total = (expEntryList?.Sum(x => x.Amount) ?? 0) + (regExpList?.Sum(x => x.Amount) ?? 0);
             ViewData["AvailableContainerClass"] = availableContainerClass;
             ViewData["Available"] = (timeSpanOption.Limit - total).ToString("N");
             ViewData["Total"] = (float)total;
@@ -101,32 +102,32 @@ namespace ExpensesControlApp.Controllers
             switch (sortOrder)
             {
                 case "name":
-                    expenseList = expenseList?.OrderBy(o => o.ExpenseName).ToList();
+                    expEntryList = expEntryList?.OrderBy(o => o.ExpenseName).ToList();
                     regExpList = regExpList?.OrderBy(o => o.ExpenseName).ToList();
                     break;
                 case "name_desc":
-                    expenseList = expenseList?.OrderByDescending(o => o.ExpenseName).ToList();
+                    expEntryList = expEntryList?.OrderByDescending(o => o.ExpenseName).ToList();
                     regExpList = regExpList?.OrderByDescending(o => o.ExpenseName).ToList();
                     break;
                 case "amount":
-                    expenseList = expenseList?.OrderBy(o => o.Amount).ToList();
+                    expEntryList = expEntryList?.OrderBy(o => o.Amount).ToList();
                     regExpList = regExpList?.OrderBy(o => o.Amount).ToList();
                     break;
                 case "amount_desc":
-                    expenseList = expenseList?.OrderByDescending(o => o.Amount).ToList();
+                    expEntryList = expEntryList?.OrderByDescending(o => o.Amount).ToList();
                     regExpList = regExpList?.OrderByDescending(o => o.Amount).ToList();
                     break;
                 case "date":
-                    expenseList = expenseList?.OrderBy(o => o.Date).ToList();
+                    expEntryList = expEntryList?.OrderBy(o => o.Date).ToList();
                     regExpList = regExpList?.OrderBy(o => o.TimeSpan).ToList();
                     break;
                 default:
-                    expenseList = expenseList?.OrderByDescending(o => o.Date).ToList();
+                    expEntryList = expEntryList?.OrderByDescending(o => o.Date).ToList();
                     regExpList = regExpList?.OrderByDescending(o => o.TimeSpan).ToList();
                     break;
             }
 
-            return View(new ExpenseManagerViewModel() { ExpenseEntries = expenseList, RegularExpenses = regExpList });
+            return View(new ExpenseManagerVM() { ExpenseEntryVMs = expEntryList, RegularExpenseVMs = regExpList });
         }
 
         public IActionResult Create()
@@ -136,24 +137,29 @@ namespace ExpensesControlApp.Controllers
         //POST-Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(ExpenseEntry expenseEntry)
+        public IActionResult Create(ExpenseEntryVM expenseEntryVM)
         {
-            // Add Expense if it doesn't exist already
-            var expense = new Expense() { ExpenseName = expenseEntry.ExpenseName, Amount = expenseEntry.Amount };
-            Expression<Func<Expense, bool>> predicate = (x => x.ExpenseName == expense.ExpenseName && x.Amount == expense.Amount);
-            _db.Expenses.AddIfNotExists<Expense>(expense, predicate);
-            _db.SaveChanges();
-            // Add ExpenseEntry if it doesn't exist already
-            var expenseInDb = _db.Expenses.FirstOrDefault(predicate);
-            expenseEntry.Expense = expenseInDb;
-            expenseEntry.ExpenseId = expenseInDb.Id;
-            //if (ModelState.IsValid)
-            //{
-            _db.ExpenseEntries.AddIfNotExists(expenseEntry, x => x.Date == expenseEntry.Date && x.ExpenseId == expenseEntry.ExpenseId);
-            _db.SaveChanges();
-            return RedirectToAction("Index");
-            //}
-            //return View(expenseEntry);
+            if (ModelState.IsValid)
+            {
+                // Add Expense if it doesn't exist already
+                var expense = new Expense() { ExpenseName = expenseEntryVM.ExpenseName, Amount = (decimal)expenseEntryVM.Amount };
+                Expression<Func<Expense, bool>> predicate = (x => x.ExpenseName == expense.ExpenseName && x.Amount == expense.Amount);
+                _db.Expenses.AddIfNotExists<Expense>(expense, predicate);
+                _db.SaveChanges();
+                // Add ExpenseEntry if it doesn't exist already
+                var expenseInDb = _db.Expenses.FirstOrDefault(predicate);
+                ExpenseEntry expenseEntry = new ExpenseEntry()
+                {
+                    ExpenseId = expenseInDb.Id,
+                    Expense = expenseInDb,
+                    Date = expenseEntryVM.Date
+                };
+
+                _db.ExpenseEntries.AddIfNotExists(expenseEntry, x => x.Date == expenseEntry.Date && x.ExpenseId == expenseEntry.ExpenseId);
+                _db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return View(expenseEntryVM);
         }
         // GET Update
         public IActionResult Update(int? entryId)
@@ -164,57 +170,68 @@ namespace ExpensesControlApp.Controllers
             if (expenseEntry == null)
                 return NotFound();
             var expense = _db.Expenses.Find(expenseEntry.ExpenseId);
-            expenseEntry.ExpenseId = expense.Id;
-            expenseEntry.ExpenseName = expense.ExpenseName;
-            expenseEntry.Amount = expense.Amount;
-            return View(expenseEntry);
+            ExpenseEntryVM expenseEntryVM = new ExpenseEntryVM()
+            {
+                EntryId = expenseEntry.EntryId,
+                ExpenseId = expenseEntry.ExpenseId,
+                Expense = expense,
+                ExpenseName = expense.ExpenseName,
+                Amount = expense.Amount,
+                Date = expenseEntry.Date
+            };
+            return View(expenseEntryVM);
 
         }
         // POST Update
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Update(ExpenseEntry expenseEntry)
+        public IActionResult Update(ExpenseEntryVM expenseEntryVM)
         {
-            //if (ModelState.IsValid)
-            //{
-            var expense = new Expense()
+            if (ModelState.IsValid)
             {
-                Id = expenseEntry.ExpenseId,
-                ExpenseName = expenseEntry.ExpenseName,
-                Amount = expenseEntry.Amount
-            };
-            var expenseInDb = _db.Expenses.Find(expense.Id);
-            _db.Entry(expenseInDb).State = EntityState.Detached;
-            // if Expense entity was modified
-            if (expenseInDb.ExpenseName != expense.ExpenseName || expenseInDb.Amount != expense.Amount)
-            {
-                
-                // update if this Expense entity isn't connected to other ExpenseEntry entities
-                if (_db.ExpenseEntries.Where(o => o.ExpenseId == expense.Id).Count() == 1)
-                    _db.Expenses.Update(expense);
-                else
+                var expense = new Expense()
                 {
-                    // else add a new Expense entity if it doesn't already exist
-                    expense.Id = 0;
-                    expenseEntry.ExpenseId = 0;
-                    _db.Expenses.AddIfNotExists<Expense>(expense, x => x.ExpenseName == expense.ExpenseName && x.Amount == expense.Amount);
+                    Id = (int)expenseEntryVM.ExpenseId,
+                    ExpenseName = expenseEntryVM.ExpenseName,
+                    Amount = (decimal)expenseEntryVM.Amount
+                };
+                var expenseInDb = _db.Expenses.Find(expense.Id);
+                _db.Entry(expenseInDb).State = EntityState.Detached;
+                // if Expense entity was modified
+                if (expenseInDb.ExpenseName != expense.ExpenseName || expenseInDb.Amount != expense.Amount)
+                {
+                    // update if this Expense entity isn't connected to other ExpenseEntry entities
+                    if (_db.ExpenseEntries.Where(o => o.ExpenseId == expense.Id).Count() == 1)
+                        _db.Expenses.Update(expense);
+                    else
+                    {
+                        // else add a new Expense entity if it doesn't already exist
+                        expense.Id = 0;
+                        expenseEntryVM.ExpenseId = 0;
+                        _db.Expenses.AddIfNotExists<Expense>(expense, x => x.ExpenseName == expense.ExpenseName && x.Amount == expense.Amount);
+                    }
+                    _db.SaveChanges();
+                    // get new ExpenseId if it was modified 
+                    if (expenseEntryVM.ExpenseId == 0)
+                    {
+                        expense = _db.Expenses.FirstOrDefault(x => x.ExpenseName == expense.ExpenseName && x.Amount == expense.Amount);
+                        expenseEntryVM.ExpenseId = expense.Id;
+                    }
                 }
+                // update ExpenseEntry entity
+                ExpenseEntry expenseEntry = new ExpenseEntry()
+                {
+                    ExpenseId = expenseEntryVM.EntryId,
+                    EntryId = expenseEntryVM.EntryId,
+                    Expense = expense,
+                    Date = expenseEntryVM.Date
+                };
+                _db.ExpenseEntries.Update(expenseEntry);
                 _db.SaveChanges();
-                // get new ExpenseId if it was modified 
-                if (expenseEntry.ExpenseId == 0)
-                {
-                    expense = _db.Expenses.FirstOrDefault(x => x.ExpenseName == expense.ExpenseName && x.Amount == expense.Amount);
-                    expenseEntry.ExpenseId = expense.Id;
-                }
+                return RedirectToAction("Index");
             }
-            
-            // update ExpenseEntry entity
-            expenseEntry.Expense = expense;
-            _db.ExpenseEntries.Update(expenseEntry);
-            _db.SaveChanges();
-            return RedirectToAction("Index");
-            //}
-            //return View(expenseEntry);
+            return View(expenseEntryVM);
+
         }
         // POST Delete
         [HttpPost]

@@ -19,7 +19,7 @@ namespace ExpensesControlApp.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Save(LimitParam obj)
+        public IActionResult Index(LimitParam obj)
         {
             if (ModelState.IsValid)
             {

@@ -2,7 +2,7 @@
     ViewData["Title"] = "Update Expense";
 }
 
-@model ExpensesControlApp.Models.ExpenseEntry
+@model ExpensesControlApp.ViewModels.ExpenseEntryVM
 <div class="container col-10">
     <form method="post" class="validate-form" asp-action="Update">
         <input asp-for="EntryId" hidden />
@@ -14,12 +14,10 @@
                 <div class="d-flex flex-column align-items-center">
                     <div class="col my-2">
                         <input asp-for="ExpenseId" hidden />
-                        <partial name="_ExpenseInput" for="Expense" />
-                        <partial name="_DateInput" />
+                        <partial name="_ExpenseEntryVMInput" />
                     </div>
                     <div class="col">
                         <input id="submit" type="submit" class="btn btn-outline-success m-2" value="Update" />
-
                         <a class="btn btn-outline-danger m-2" asp-action="Index">Cancel</a>
                     </div>
                 </div>
@@ -29,11 +27,7 @@
 </div>
 @section MyScripts {
 <script>
-
-
-
-        setUpDatePicker();
-
-    submitDatePicker();
+    validateForm();
+    setUpDatePicker();
 </script>
 }

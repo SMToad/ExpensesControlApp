@@ -1,0 +1,30 @@
+﻿@using ExpensesControlApp.Helpers
+@model ExpensesControlApp.ViewModels.RegularExpenseVM
+<div class="input-group">
+    <div class="input-group-prepend w-25">
+        <span class="input-group-text w-100" id="addon-name">Name</span>
+    </div>
+    <input asp-for="ExpenseName" name="ExpenseName" class="form-control" aria-describedby="addon-name">
+</div>
+<span asp-validation-for="ExpenseName" class="text-danger"></span>
+<label for="ExpenseName" class="validation_error_message text-danger"></label>
+<div class="input-group">
+    <div class="input-group-prepend w-25">
+        <span class="input-group-text w-100" id="addon-amount">Amount</span>
+    </div>
+    <input asp-for="Amount" name="Amount" class="form-control" aria-describedby="addon-amount">
+</div>
+<span asp-validation-for="Amount" class="text-danger"></span>
+<label for="Amount" class="validation_error_message text-danger"></label>
+<div class="input-group">
+    <div class="input-group-prepend w-25">
+        <span class="input-group-text w-100" id="addon-timespan">Span</span>
+    </div>
+
+    <input type="radio" asp-for="TimeSpan" name="TimeSpan" class="btn-check" value="0" id="time-option1" autocomplete="off" >
+    <label class="btn btn-outline-secondary" for="time-option1">@TimeOption.Weekly</label>
+    <input type="radio" asp-for="TimeSpan" name="TimeSpan" class="btn-check" value="1" id="time-option2" autocomplete="off">
+    <label class="btn btn-outline-secondary" for="time-option2">@TimeOption.Monthly</label>
+</div>
+<span asp-validation-for="TimeSpan" class="text-danger"></span>
+<label for="TimeSpan" class="validation_error_message text-danger"></label>
