@@ -1,5 +1,5 @@
 ﻿@using ExpensesControlApp.Helpers
-@model TimeOption
+@model TimeSpanOption
 
     <div class="input-group">
         <div class="input-group-prepend w-25">
@@ -7,8 +7,8 @@
         </div>
         
         <input type="radio" name="TimeSpan" class="btn-check" value="0" id="time-option1" autocomplete="off">
-        <label class="btn btn-outline-secondary" for="time-option1">@TimeOption.Weekly</label>
+        <label class="btn btn-outline-secondary" for="time-option1">@TimeSpanOption.Weekly</label>
         <input type="radio" name="TimeSpan" class="btn-check" value="1" id="time-option2" autocomplete="off">
-        <label class="btn btn-outline-secondary" for="time-option2">@TimeOption.Monthly</label>
+        <label class="btn btn-outline-secondary" for="time-option2">@TimeSpanOption.Monthly</label>
     </div>
     <label for="TimeSpan" class="validation_error_message text-danger"></label>

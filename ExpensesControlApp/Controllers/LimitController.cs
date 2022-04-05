@@ -5,27 +5,27 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ExpensesControlApp.Controllers
 {
-    public class LimitParamController : Controller
+    public class LimitController : Controller
     {
         private readonly ApplicationDbContext _db;
-        public LimitParamController(ApplicationDbContext db)
+        public LimitController(ApplicationDbContext db)
         {
             _db = db;
         }
         public IActionResult Index()
         {
-            LimitParam limitParams = new LimitParam(_db.Params);
-            return View(limitParams);
+            Limit limit = new Limit(_db.Props);
+            return View(limit);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Index(LimitParam obj)
+        public IActionResult Index(Limit obj)
         {
             if (ModelState.IsValid)
             {
-                var amount = _db.Params.SingleOrDefault(p => p.Key == "limitAmount"); 
+                var amount = _db.Props.SingleOrDefault(p => p.Key == "limitAmount"); 
                 amount.Value= obj.Amount.ToString();
-                var timeSpan = _db.Params.SingleOrDefault(p => p.Key == "limitTimeSpan");
+                var timeSpan = _db.Props.SingleOrDefault(p => p.Key == "limitTimeSpan");
                 timeSpan.Value = ((int)obj.TimeSpan).ToString();
                 _db.SaveChanges();
                 return RedirectToAction("Index", "ExpenseManager");

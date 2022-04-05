@@ -3,7 +3,7 @@
     ViewData["Title"] = "Limit";
 }
 
-@model ExpensesControlApp.ViewModels.LimitParam
+@model ExpensesControlApp.ViewModels.Limit
 <div class="container col-10">
     <form id="form" class="validate-form" method="post" asp-action="Index">
         <div class="border p-3 form-group">
@@ -30,9 +30,9 @@
                             </div>
 
                             <input type="radio" asp-for="TimeSpan" name="TimeSpan" class="btn-check" value="0" id="time-option1" autocomplete="off">
-                            <label class="btn btn-outline-secondary" for="time-option1">@TimeOption.Weekly</label>
+                            <label class="btn btn-outline-secondary" for="time-option1">@TimeSpanOption.Weekly</label>
                             <input type="radio" asp-for="TimeSpan" name="TimeSpan" class="btn-check" value="1" id="time-option2" autocomplete="off">
-                            <label class="btn btn-outline-secondary" for="time-option2">@TimeOption.Monthly</label>
+                            <label class="btn btn-outline-secondary" for="time-option2">@TimeSpanOption.Monthly</label>
                         </div>
                         <span asp-validation-for="TimeSpan" class="text-danger"></span>
                         <label for="TimeSpan" class="validation_error_message text-danger"></label>

@@ -1,29 +1,34 @@
 ﻿
 using ExpensesControlApp.ViewModels;
+using System.Globalization;
 
 namespace ExpensesControlApp.Helpers
 {
-    public class Week : TimeSpanOption
+    public class Week : TimeSpan
     {
         public override string Label { get => base.Label + " for this Week"; }
-        public override void SetLimit(LimitParam limitParam)
+        public override void SetLimit(Limit limit)
         {
-            switch (limitParam.TimeSpan)
+            switch (limit.TimeSpan)
             {
-                case TimeOption.Weekly:
-                    Limit = (decimal)limitParam.Amount;
+                case TimeSpanOption.Weekly:
+                    Limit = (decimal)limit.Amount;
                     break;
-                case TimeOption.Monthly:
-                    Limit = Convert.ToDecimal(limitParam.Amount) / DateTime.DaysInMonth(DateTime.Today.Year, DateTime.Today.Month) * 7;
+                case TimeSpanOption.Monthly:
+                    Limit = Convert.ToDecimal(limit.Amount) / DateTime.DaysInMonth(DateTime.Today.Year, DateTime.Today.Month) * 7;
                     break;
                 default:
                     break;
             }
         }
-        public override IEnumerable<RegularExpenseVM> SetRegularExpensesList(IEnumerable<RegularExpenseVM> regExpList)
+        public override IEnumerable<ExpenseEntryVM> Filter(IEnumerable<ExpenseEntryVM> expEntryList)
+        {
+            return expEntryList.Where(o => ISOWeek.GetWeekOfYear(o.Date) == ISOWeek.GetWeekOfYear(DateTime.Today));
+        }
+        public override IEnumerable<RegularExpenseVM> Filter(IEnumerable<RegularExpenseVM> regExpList)
         {
             var copyList = regExpList.ToList();
-            foreach (var regExp in copyList.Where(x => x.TimeSpan == TimeOption.Monthly))
+            foreach (var regExp in copyList.Where(x => x.TimeSpan == TimeSpanOption.Monthly))
                 regExp.Amount = regExp.Amount / DateTime.DaysInMonth(DateTime.Today.Year, DateTime.Today.Month) * 7;
             return copyList;
         }

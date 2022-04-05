@@ -13,4 +13,5 @@ namespace ExpensesControlApp.Helpers
                 dbSet.Add(entity);
         }
     }
+
 }

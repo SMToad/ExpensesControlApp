@@ -9,7 +9,7 @@ namespace ExpensesControlApp.Data
         {
 
         }
-        public DbSet<Param> Params { get; set; }
+        public DbSet<Prop> Props { get; set; }
         public DbSet<Expense> Expenses { get; set; }
         public DbSet<ExpenseEntry> ExpenseEntries { get; set; }
         public DbSet<RegularExpense> RegularExpenses { get; set; }

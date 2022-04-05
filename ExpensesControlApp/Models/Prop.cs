@@ -2,7 +2,7 @@
 
 namespace ExpensesControlApp.Models
 {
-    public class Param
+    public class Prop
     {
         [Key]
         public int Id { get; set; }

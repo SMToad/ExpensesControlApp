@@ -9,15 +9,12 @@
     <link rel="stylesheet" href="~/ExpensesControlApp.styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/lib/font-awesome/css/all.css" />
     <link rel="stylesheet" href="~/lib/jqueryui/jquery-ui.min.css" />
-
-
 </head>
 <body>
     <nav class="navbar sticky-top navbar-expand-sm navbar-light bg-white border-bottom box-shadow mb-3">
-
         <div class="container-fluid">
             <div class="nav-item px-2">
-                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">
+                <a class="nav-link text-dark" asp-controller="Home" asp-action="Index">
                     <i class="fa-solid fa-house-chimney"></i>
                 </a>
             </div>
@@ -27,19 +24,25 @@
             <div class="collapse navbar-collapse" id="collapsibleNavbar">
                 <ul class="navbar-nav">
                     <li class="nav-item px-2">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="ExpenseManager" asp-action="Index">Manage Expenses</a>
+                        <a class="nav-link text-dark" asp-controller="ExpenseManager" asp-action="Index">
+                            Manage Expenses
+                        </a>
                     </li>
                     <li class="nav-item px-2">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="RegularExpense" asp-action="Index">Manage Regular Expenses</a>
+                        <a class="nav-link text-dark" asp-controller="RegularExpense" asp-action="Index">
+                            Manage Regular Expenses
+                        </a>
                     </li>
                     <li class="nav-item px-2">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="LimitParam" asp-action="Index">Manage Expense Limit</a>
+                        <a class="nav-link text-dark" asp-controller="Limit" asp-action="Index">
+                            Manage Expense Limit
+                        </a>
                     </li>
                 </ul>
             </div>
         </div>
-
     </nav>
+
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
@@ -51,6 +54,7 @@
             <p>&copy; 2022 - ExpensesControlApp</p>
         </div>
     </footer>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
     <script src="~/lib/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.min.js"></script>
@@ -60,6 +64,6 @@
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
     @RenderSection("MyScripts", required: false)
-    
+
 </body>
 </html>
