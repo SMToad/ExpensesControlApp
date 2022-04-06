@@ -30,13 +30,8 @@
             var name = element.attr('name');
             var errorSelector = '.validation-error-message[for="' + name + '"]';
             var $element = $(errorSelector);
-            //if ($element.length) {
-            //    $(errorSelector).html(error.html());
-            //} 
-            //else {
-                error.addClass("text-danger");
-                error.insertAfter($element);
-           // }
+            error.addClass("text-danger");
+            error.insertAfter($element);
         }
     });
 }
