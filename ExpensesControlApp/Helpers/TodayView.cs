@@ -6,7 +6,7 @@ namespace ExpensesControlApp.Helpers
 {
     public class TodayView : TimeSpanView
     {
-        public override string Label { get => base.Label + " for today"; }
+        public override string Label { get => base.Label + " for Today"; }
         public override void SetLimit(Limit limit)
         {
             switch (limit.TimeSpan)

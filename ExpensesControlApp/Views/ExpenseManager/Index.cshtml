@@ -129,7 +129,9 @@
                     var max = Model.Limit == 0 ? @Model.Total : Model.Limit;
                     var percentage = Math.Round(@Model.Total * 100 / max);
                 }
-                <div class="progress-bar bg-dark" style="width: @(percentage)%;" role="progressbar" aria-valuenow="@Model.Total" aria-valuemin="0" aria-valuemax="@max" ></div>
+                <div class="progress-bar bg-dark" style="width: @(percentage)%;" role="progressbar" aria-valuenow="@Model.Total" aria-valuemin="0" aria-valuemax="@max" >
+
+                </div>
                 
             </div>
         </div>
@@ -151,7 +153,7 @@
     $(document).click(function (event) {
         var $target = $(event.target);
         var isInside = $target.closest("#confirm-bar").length || $target.closest(".delete-btn").length;
-        if (!isInside) $("#confirm-bar").slideUp(speed);
+        if (!isInside) hideConfirmBar();
     });
     $(".delete-btn").click(function () {
         $("#confirm-bar").insertAfter($(this).closest('tr'));

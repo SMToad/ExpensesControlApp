@@ -18,8 +18,10 @@ namespace ExpensesControlApp.ViewModels
         public Limit() { }
         public Limit(IEnumerable<Prop> props)
         {
-            Amount = props.Where(p => p.Key == "limitAmount").Select(p => Convert.ToDecimal(p.Value)).First<decimal>();
-            TimeSpan =(TimeSpanOption)props.Where(p => p.Key == "limitTimeSpan").Select(p => Convert.ToInt32(p.Value)).First<int>();
+            Amount = props.Where(p => p.Key == "limitAmount")
+                .Select(p => Convert.ToDecimal(p.Value)).First<decimal>();
+            TimeSpan =(TimeSpanOption)props.Where(p => p.Key == "limitTimeSpan")
+                .Select(p => Convert.ToInt32(p.Value)).First<int>();
         }
     }
 }

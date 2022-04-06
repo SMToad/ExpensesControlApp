@@ -29,9 +29,9 @@ namespace ExpensesControlApp.Helpers
                                    Date = entry.Date
                                });
         }
-        public static IEnumerable<ExpenseEntryVM> Filter(this IEnumerable<ExpenseEntryVM> expEntryList, TimeSpanView timeSpan)
+        public static IEnumerable<ExpenseEntryVM> Filter(this IEnumerable<ExpenseEntryVM> expEntryList, TimeSpanView timeSpanView)
         {
-            return timeSpan.Filter(expEntryList);
+            return timeSpanView.Filter(expEntryList);
         }
         public static IEnumerable<ExpenseEntryVM> Sort(this IEnumerable<ExpenseEntryVM> expEntryList, string sortOrder)
         {

@@ -19,18 +19,18 @@ namespace ExpensesControlApp.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Index(Limit obj)
+        public IActionResult Index(Limit limit)
         {
             if (ModelState.IsValid)
             {
                 var amount = _db.Props.SingleOrDefault(p => p.Key == "limitAmount"); 
-                amount.Value= obj.Amount.ToString();
+                amount.Value= limit.Amount.ToString();
                 var timeSpan = _db.Props.SingleOrDefault(p => p.Key == "limitTimeSpan");
-                timeSpan.Value = ((int)obj.TimeSpan).ToString();
+                timeSpan.Value = ((int)limit.TimeSpan).ToString();
                 _db.SaveChanges();
                 return RedirectToAction("Index", "ExpenseManager");
             }
-            return View(obj);
+            return View(limit);
         }
     }
 }

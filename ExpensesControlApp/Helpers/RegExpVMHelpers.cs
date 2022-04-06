@@ -29,9 +29,9 @@ namespace ExpensesControlApp.Helpers
                                    TimeSpan = (TimeSpanOption)regExp.TimeSpan
                                });
         }
-        public static IEnumerable<RegularExpenseVM> Filter(this IEnumerable<RegularExpenseVM> regExpList, TimeSpanView timeSpan)
+        public static IEnumerable<RegularExpenseVM> Filter(this IEnumerable<RegularExpenseVM> regExpList, TimeSpanView timeSpanView)
         {
-            return timeSpan.Filter(regExpList);
+            return timeSpanView.Filter(regExpList);
         }
         public static IEnumerable<RegularExpenseVM> Sort(this IEnumerable<RegularExpenseVM> regExpList, string sortOrder)
         {
