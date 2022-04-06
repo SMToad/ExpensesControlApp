@@ -22,47 +22,26 @@ namespace ExpensesControlApp.Controllers
             var expEntryList = ExpEntryVMHelpers.GetVMList(_db.Expenses, _db.ExpenseEntries);
             var regExpList = RegExpVMHelpers.GetVMList(_db.Expenses, _db.RegularExpenses);
             Limit limit = new Limit(_db.Props);
-            Helpers.TimeSpan timeSpan;
-            string availableContainerClass = "";
-
-            TempData["TimeSpan"] = timeInput ?? "total";
-            TempData["SortOrder"] = sortInput ?? "date_desc";
+            
+            TempData["TimeSpanInput"] = timeInput ?? "total";
+            TempData["SortOrderInput"] = sortInput ?? "date_desc";
 
             ViewBag.DateSortParm = sortInput == "date_desc" ? "date" : "date_desc";
             ViewBag.NameSortParm = sortInput == "name" ? "name_desc" : "name";
             ViewBag.AmountSortParm = sortInput == "amount" ? "amount_desc" : "amount";
+
             
-            switch (timeInput)
-            {
-                case "today":
-                    timeSpan = new Today();
-                    break;
-                case "week":
-                    timeSpan = new Week();
-                    break;
-                case "month":
-                    timeSpan = new Month();
-                    break;
-                default:
-                    timeSpan = new Helpers.TimeSpan();
-                    availableContainerClass = "d-none";
-                    break;
-            }
-            timeSpan.SetLimit(limit);
-            expEntryList = expEntryList.Filter(timeSpan);
-            regExpList = regExpList.Filter(timeSpan);
             expEntryList = expEntryList?.Sort(sortInput);
             regExpList = regExpList?.Sort(sortInput);
 
-            decimal total = (expEntryList?.Sum(x => x.Amount) ?? 0) + (regExpList?.Sum(x => x.Amount) ?? 0);
-            ViewData["AvailableContainerClass"] = availableContainerClass;
-            ViewData["Available"] = (timeSpan.Limit - total).ToString("N");
-            ViewData["Total"] = (float)total;
-            ViewData["TotalString"] = total.ToString("N");
-            ViewData["LimitAmount"] = timeSpan.Limit;
-            ViewData["TimeSpanLabel"] = timeSpan.Label;
+            ExpenseManagerVM expenseManagerVM = new ExpenseManagerVM()
+            {
+                ExpenseEntryVMs = expEntryList,
+                RegularExpenseVMs = regExpList
+            };
+            expenseManagerVM.ApplyTimeSpan(timeInput, limit);
 
-            return View(new ExpenseManagerVM() { ExpenseEntryVMs = expEntryList, RegularExpenseVMs = regExpList });
+            return View(expenseManagerVM);
         }
 
         public IActionResult Create()

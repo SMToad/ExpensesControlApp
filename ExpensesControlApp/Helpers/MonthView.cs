@@ -2,7 +2,7 @@
 
 namespace ExpensesControlApp.Helpers
 {
-    public class Month : TimeSpan
+    public class MonthView : TimeSpanView
     {
         public override string Label { get => base.Label + " for this Month"; }
         public override void SetLimit(Limit limit)

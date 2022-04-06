@@ -6,7 +6,7 @@
 
 @model ExpensesControlApp.ViewModels.RegularExpenseVM
 <div class="container col-10">
-    <form method="post" class="validate-form" asp-action="Update">
+    <form class="validate-form" method="post" asp-action="Update">
         <input asp-for="RegularExpenseId" hidden />
         <div class="border p-3 form-group">
             <div class="row">
@@ -20,17 +20,13 @@
                             TempData["TimeSpanInputValue"] = (int)Model.TimeSpan;
                         }
                         <partial name="_RegularExpenseVMInput" />
-                        
-
                     </div>
                     <div class="col">
-                        <input id="submit" type="submit" class="btn btn-outline-success m-2" value="Update" />
-
+                        <input type="submit" class="btn btn-outline-success m-2" value="Update" />
                         <a class="btn btn-outline-danger m-2" asp-action="Index">Cancel</a>
                     </div>
                 </div>
             </div>
-
         </div>
     </form>
 </div>
@@ -39,6 +35,5 @@
     var timeSpan = '@TempData["TimeSpanInputValue"]';
     validateForm();
     convertTimeSpanInput(timeSpan);
-
 </script>
 }

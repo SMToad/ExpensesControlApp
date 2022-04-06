@@ -3,7 +3,7 @@ using ExpensesControlApp.ViewModels;
 
 namespace ExpensesControlApp.Helpers
 {
-    public class TimeSpan
+    public class TimeSpanView
     {
         public virtual string Label { get => "Expenses"; }
         public virtual decimal Limit { get; internal set; }

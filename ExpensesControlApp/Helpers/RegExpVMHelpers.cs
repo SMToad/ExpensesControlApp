@@ -29,7 +29,7 @@ namespace ExpensesControlApp.Helpers
                                    TimeSpan = (TimeSpanOption)regExp.TimeSpan
                                });
         }
-        public static IEnumerable<RegularExpenseVM> Filter(this IEnumerable<RegularExpenseVM> regExpList, TimeSpan timeSpan)
+        public static IEnumerable<RegularExpenseVM> Filter(this IEnumerable<RegularExpenseVM> regExpList, TimeSpanView timeSpan)
         {
             return timeSpan.Filter(regExpList);
         }

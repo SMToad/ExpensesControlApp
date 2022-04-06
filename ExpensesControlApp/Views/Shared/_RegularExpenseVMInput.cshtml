@@ -7,7 +7,8 @@
     <input asp-for="ExpenseName" name="ExpenseName" class="form-control" aria-describedby="addon-name">
 </div>
 <span asp-validation-for="ExpenseName" class="text-danger"></span>
-<label for="ExpenseName" class="validation_error_message text-danger"></label>
+<label for="ExpenseName" class="validation-error-message text-danger"></label>
+
 <div class="input-group">
     <div class="input-group-prepend w-25">
         <span class="input-group-text w-100" id="addon-amount">Amount</span>
@@ -15,7 +16,8 @@
     <input asp-for="Amount" name="Amount" class="form-control" aria-describedby="addon-amount">
 </div>
 <span asp-validation-for="Amount" class="text-danger"></span>
-<label for="Amount" class="validation_error_message text-danger"></label>
+<label for="Amount" class="validation-error-message text-danger"></label>
+
 <div class="input-group">
     <div class="input-group-prepend w-25">
         <span class="input-group-text w-100" id="addon-timespan">Span</span>
@@ -27,4 +29,4 @@
     <label class="btn btn-outline-secondary" for="time-option2">@TimeSpanOption.Monthly</label>
 </div>
 <span asp-validation-for="TimeSpan" class="text-danger"></span>
-<label for="TimeSpan" class="validation_error_message text-danger"></label>
+<label for="TimeSpan" class="validation-error-message text-danger"></label>

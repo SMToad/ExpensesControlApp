@@ -2,18 +2,18 @@
     ViewData["Title"] = "Regular Expenses";
 }
 
-@model  IEnumerable<ExpensesControlApp.ViewModels.RegularExpenseVM>
+@model IEnumerable<ExpensesControlApp.ViewModels.RegularExpenseVM>
 <div class="container col-10">
-    
+
     <div class="row pt-4">
         <div class="col">
-            <h2 id="title" class="text-dark">Regular Expenses</h2>
+            <h2 class="text-dark">Regular Expenses</h2>
         </div>
 
     </div>
     <div class="row pt-4">
         <div class="col-6">
-            <form id="form" asp-action="Index">
+            <form asp-action="Index">
                 <input id="sort-input" name="sortInput" value="name" hidden />
             </form>
         </div>
@@ -30,24 +30,27 @@
         <table class="table table-bordered table-hover mb-5" style="width:100%">
             <thead>
                 <tr>
-                    
                     <th>
-                        <a role="button" data-list="@ViewBag.NameSortParm" class="sort-link text-decoration-none text-dark">Expense Name</a>
+                        <a role="button" data-list="@ViewBag.NameSortParm" class="sort-link text-decoration-none text-dark">
+                            Expense Name
+                        </a>
                     </th>
                     <th>
-                        <a role="button" data-list="@ViewBag.AmountSortParm" class="sort-link text-decoration-none text-dark">Amount</a>
-                   </th>
-
+                        <a role="button" data-list="@ViewBag.AmountSortParm" class="sort-link text-decoration-none text-dark">
+                            Amount
+                        </a>
+                    </th>
                     <th>
-                        <a role="button" data-list="@ViewBag.TimeSortParm" class="sort-link text-decoration-none text-dark">Time Span</a>
-                   </th>
-                   <th></th>
+                        <a role="button" data-list="@ViewBag.TimeSortParm" class="sort-link text-decoration-none text-dark">
+                            Time Span
+                        </a>
+                    </th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var regExpense in Model)
                 {
-
                     <tr>
                         <td class="col-3">@regExpense.ExpenseName</td>
                         <td class="col-3">@regExpense.Amount?.ToString("N")</td>
@@ -64,36 +67,35 @@
                         </td>
                     </tr>
                 }
-                <partial name="_ConfirmBar"/>
+                <partial name="_ConfirmBar" />
             </tbody>
         </table>
     }
     else
     {
-        <h1>No Regular Expenses Created Yet</h1>
+        <h1>No Regular Expenses created yet</h1>
     }
-    
+
 </div>
 @section MyScripts {
-    <script>
-        
-        let sortOrder = '@TempData["SortOrder"]';
-        function hideConfirmBar(speed = "slow") {
-            $("#confirm-bar").slideUp(speed);
-        }
-        $(document).click(function (event) {
-            var $target = $(event.target);
-            var isInside = $target.closest("#confirm-bar").length || $target.closest(".delete-btn").length;
-            if (!isInside) hideConfirmBar("fast");
-        });
-        $(".delete-btn").click(function () {
-            $("#confirm-bar").insertAfter($(this).closest('tr'));
-            $("#confirm-bar").slideDown("slow");
-            $(".deleteId").attr("value", $(this).data('list'));
-        });
-        $(".sort-link").click(function () {
-            $("#sort-input").attr("value", $(this).data('list'));
-            $("#form").submit();
-        });
-    </script>
+<script>
+    let sortOrder = '@TempData["SortOrderInput"]';
+    function hideConfirmBar(speed = "slow") {
+        $("#confirm-bar").slideUp(speed);
+    }
+    $(document).click(function (event) {
+        var $target = $(event.target);
+        var isInside = $target.closest("#confirm-bar").length || $target.closest(".delete-btn").length;
+        if (!isInside) hideConfirmBar("fast");
+    });
+    $(".delete-btn").click(function () {
+        $("#confirm-bar").insertAfter($(this).closest('tr'));
+        $("#confirm-bar").slideDown("slow");
+        $(".deleteId").attr("value", $(this).data('list'));
+    });
+    $(".sort-link").click(function () {
+        $("#sort-input").attr("value", $(this).data('list'));
+        $("#form").submit();
+    });
+</script>
 }

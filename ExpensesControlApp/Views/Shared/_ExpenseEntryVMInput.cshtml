@@ -6,7 +6,8 @@
     <input asp-for="ExpenseName" name="ExpenseName" class="form-control" aria-describedby="addon-name">
 </div>
 <span asp-validation-for="ExpenseName" class="text-danger"></span>
-<label for="ExpenseName" class="validation_error_message text-danger"></label>
+<label for="ExpenseName" class="validation-error-message text-danger"></label>
+
 <div class="input-group">
     <div class="input-group-prepend w-25">
         <span class="input-group-text w-100" id="addon-amount">Amount</span>
@@ -14,16 +15,16 @@
     <input asp-for="Amount" name="Amount" class="form-control" aria-describedby="addon-amount">
 </div>
 <span asp-validation-for="Amount" class="text-danger"></span>
-<label for="Amount" class="validation_error_message text-danger"></label>
+<label for="Amount" class="validation-error-message text-danger"></label>
+
 <div class="input-group">
     <div class="input-group-prepend w-25">
         <span class="input-group-text w-100" id="addon-date">Date</span>
     </div>
-
     @{
         string date = (Model?.Date ?? DateTime.Now.Date).ToShortDateString();
     }
     <input id="datepicker" name="Date" value="@date" class="form-control" aria-describedby="addon-date">
 </div>
 <span asp-validation-for="Date" class="text-danger"></span>
-<label for="Date" class="validation_error_message text-danger"></label>
+<label for="Date" class="validation-error-message text-danger"></label>

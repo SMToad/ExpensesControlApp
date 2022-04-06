@@ -34,7 +34,7 @@
         },
         errorPlacement: function (error, element) {
             var name = element.attr('name');
-            var errorSelector = '.validation_error_message[for="' + name + '"]';
+            var errorSelector = '.validation-error-message[for="' + name + '"]';
             var $element = $(errorSelector);
             if ($element.length) {
                 $(errorSelector).html(error.html());

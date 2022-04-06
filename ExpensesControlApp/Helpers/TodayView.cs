@@ -4,7 +4,7 @@ using ExpensesControlApp.ViewModels;
 
 namespace ExpensesControlApp.Helpers
 {
-    public class Today : TimeSpan
+    public class TodayView : TimeSpanView
     {
         public override string Label { get => base.Label + " for today"; }
         public override void SetLimit(Limit limit)

@@ -4,7 +4,7 @@ using System.Globalization;
 
 namespace ExpensesControlApp.Helpers
 {
-    public class Week : TimeSpan
+    public class WeekView : TimeSpanView
     {
         public override string Label { get => base.Label + " for this Week"; }
         public override void SetLimit(Limit limit)

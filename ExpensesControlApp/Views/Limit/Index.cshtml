@@ -1,11 +1,11 @@
 ﻿@using ExpensesControlApp.Helpers
 @{
-    ViewData["Title"] = "Limit";
+    ViewData["Title"] = "Set Limit";
 }
 
 @model ExpensesControlApp.ViewModels.Limit
 <div class="container col-10">
-    <form id="form" class="validate-form" method="post" asp-action="Index">
+    <form class="validate-form" method="post" asp-action="Index">
         <div class="border p-3 form-group">
             <div class="row">
                 <h2 class="text-black-50 pl-3">Set Limit</h2>
@@ -13,6 +13,7 @@
             <div class="row">
                 <div class="d-flex flex-column align-items-center">
                     <div class="col my-2">
+
                         <div class="input-group">
                             <div class="input-group-prepend w-25">
                                 <span class="input-group-text w-100" id="addon-amount">Amount</span>
@@ -20,7 +21,8 @@
                             <input asp-for="Amount" name="Amount" class="form-control" aria-describedby="addon-amount">
                         </div>
                         <span asp-validation-for="Amount" class="text-danger"></span>
-                        <label for="Amount" class="validation_error_message text-danger"></label>
+                        <label for="Amount" class="validation-error-message text-danger"></label>
+
                         @{
                             TempData["TimeSpanInputValue"] = (int)Model.TimeSpan;
                         }
@@ -28,23 +30,21 @@
                             <div class="input-group-prepend w-25">
                                 <span class="input-group-text w-100" id="addon-timespan">Span</span>
                             </div>
-
                             <input type="radio" asp-for="TimeSpan" name="TimeSpan" class="btn-check" value="0" id="time-option1" autocomplete="off">
                             <label class="btn btn-outline-secondary" for="time-option1">@TimeSpanOption.Weekly</label>
                             <input type="radio" asp-for="TimeSpan" name="TimeSpan" class="btn-check" value="1" id="time-option2" autocomplete="off">
                             <label class="btn btn-outline-secondary" for="time-option2">@TimeSpanOption.Monthly</label>
                         </div>
                         <span asp-validation-for="TimeSpan" class="text-danger"></span>
-                        <label for="TimeSpan" class="validation_error_message text-danger"></label>
+                        <label for="TimeSpan" class="validation-error-message text-danger"></label>
+
                     </div>
                     <div class="col">
-                        <input id="submit" type="submit" class="btn btn-outline-success m-2" value="Save" />
-
+                        <input type="submit" class="btn btn-outline-success m-2" value="Save"/>
                         <a class="btn btn-outline-danger m-2" asp-controller="ExpenseManager" asp-action="Index">Cancel</a>
                     </div>
                 </div>
             </div>
-
         </div>
     </form>
 </div>
@@ -54,6 +54,5 @@
     validateForm();
     convertTimeSpanInput(timeSpan);
 </script>
-
 }
 

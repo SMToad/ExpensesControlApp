@@ -8,7 +8,7 @@
 <div class="container col-10">
     <div class="row pt-4">
         <div class="col">
-            <h2 id="title" class="text-dark">@ViewData["TimeSpanLabel"]</h2>
+            <h2 id="title" class="text-dark">@Model.Title</h2>
         </div>
 
     </div>
@@ -95,13 +95,13 @@
                 </div>
                 <div class="col-3">
 
-                    <p id="total" class="px-2">@ViewData["TotalString"]</p>
+                    <p id="total" class="px-2">@Model.Total.ToString("N")</p>
                 </div>
-                <div class="col-3 @(ViewData["AvailableContainerClass"])">
-                    <p class="text-end px-2 fw-bold">Available:</p>
+                <div class="col-3 @(Model.Available["ContainerClass"])">
+                    <p class="text-end px-2 fw-bold">@Model.Available["Label"]</p>
                 </div>
-                <div class="col-3 @(ViewData["AvailableContainerClass"])">
-                    <p id="available" class="px-2 fw-bold">@ViewData["Available"]</p>
+                <div class="col-3 @(Model.Available["ContainerClass"])">
+                    <p id="available" class="px-2 fw-bold">@Model.Available["Value"]</p>
                 </div>
             </div>
 
@@ -112,34 +112,39 @@
                     </div>
                     <div class="col-6">
 
-                        <p id="total" class="px-2">@ViewData["TotalString"]</p>
+                        <p id="total" class="px-2">@Model.Total.ToString("N")</p>
                     </div>
                 </div>
-                <div class="row @(ViewData["AvailableContainerClass"])">
+                <div class="row @(Model.Available["ContainerClass"])">
                     <div class="col-6">
-                        <p class="text-end px-2 fw-bold">Available:</p>
+                        <p class="text-end px-2 fw-bold">@Model.Available["Label"]</p>
                     </div>
                     <div class="col-6">
-                        <p id="available" class="px-2 fw-bold">@ViewData["Available"]</p>
+                        <p id="available" class="px-2 fw-bold">@Model.Available["Value"]</p>
                     </div>
                 </div>
             </div>
             <div class="progress mb-2" style="height: 5px;">
-                <div id="progress-bar" class="progress-bar bg-dark" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                @{
+                    var max = Model.Limit == 0 ? @Model.Total : Model.Limit;
+                    var percentage = Math.Round(@Model.Total * 100 / max);
+                }
+                <div class="progress-bar bg-dark" style="width: @(percentage)%;" role="progressbar" aria-valuenow="@Model.Total" aria-valuemin="0" aria-valuemax="@max" ></div>
+                
             </div>
         </div>
-
     }
     else
     {
-        <h1>No Expenses in this Time Span</h1>
+        <h1>No Expenses made in this Time Span</h1>
     }
 
 </div>
 @section MyScripts {
 <script>
-    let timeSpan = '@TempData["TimeSpan"]';
-    let sortOrder = '@TempData["SortOrder"]';
+    let timeSpan = '@TempData["TimeSpanInput"]';
+    let sortOrder = '@TempData["SortOrderInput"]';
+
     function hideConfirmBar(speed = "slow") {
         $("#confirm-bar").slideUp(speed);
     }
@@ -161,17 +166,6 @@
     $(".drop-btn").click(function () {
         $("#time-input").attr("value", $(document.activeElement).data('list'));
         $("#sort-input").attr("value", sortOrder);
-    });
-    $(document).ready(function () {
-        if (timeSpan != "total") {
-            let total = parseFloat('@ViewData["Total"]');
-            let limitAmount = parseFloat('@ViewData["LimitAmount"]');
-            if (!limitAmount) limitAmount = total;
-            let percentage = total * 100 / limitAmount;
-            $("#progress-bar").attr({ "aria-valuenow": total, "aria-valuemax": limitAmount }).css("width", percentage + "%");
-
-
-        }
     });
 </script>
 }

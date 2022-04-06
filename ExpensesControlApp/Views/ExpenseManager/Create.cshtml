@@ -4,7 +4,7 @@
 
 @model ExpensesControlApp.ViewModels.ExpenseEntryVM
 <div class="container col-10">
-    <form id="form" class="validate-form" method="post">
+    <form class="validate-form" method="post">
         <div class="border p-3 form-group">
             <div class="row">
                 <h2 class="text-black-50 pl-3">Add Expense</h2>
@@ -15,13 +15,11 @@
                         <partial name="_ExpenseEntryVMInput" />
                     </div>
                     <div class="col">
-                        <input id="submit" type="submit" class="btn btn-outline-success m-2" asp-action="Create" value="Create" />
-
+                        <input type="submit" class="btn btn-outline-success m-2" asp-action="Create" value="Create" />
                         <a class="btn btn-outline-danger m-2" asp-action="Index">Cancel</a>
                     </div>
                 </div>
             </div>
-
         </div>
     </form>
 </div>
