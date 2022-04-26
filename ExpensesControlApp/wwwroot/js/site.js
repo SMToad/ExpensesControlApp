@@ -8,7 +8,7 @@
             },
             Amount: {
                 required: true,
-                pattern: /^[0-9]+(,[0-9]{1,3})?$/
+                pattern: /^[0-9]+(,[0-9]{1,2})?$/
             },
             Date: "required",
             TimeSpan: "required"
@@ -21,7 +21,7 @@
             },
             Amount: {
                 required: "The Amount of the expense is required",
-                pattern: "The Amount should be numeric and have up to 3 digits after the \",\""
+                pattern: "The Amount has invalid format"
             },
             Date: "The Date of the expense is required",
             TimeSpan: "Time span of the expense is required"

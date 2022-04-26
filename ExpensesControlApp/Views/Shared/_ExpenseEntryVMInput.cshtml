@@ -3,7 +3,7 @@
     <div class="input-group-prepend w-25">
         <span class="input-group-text w-100" id="addon-name">Name</span>
     </div>
-    <input asp-for="ExpenseName" name="ExpenseName" class="form-control" aria-describedby="addon-name">
+    <input asp-for="ExpenseName" name="ExpenseName" class="form-control" aria-describedby="addon-name" placeholder="Expense name">
 </div>
 <span asp-validation-for="ExpenseName" class="text-danger"></span>
 <label for="ExpenseName" class="validation-error-message text-danger"></label>
@@ -12,7 +12,7 @@
     <div class="input-group-prepend w-25">
         <span class="input-group-text w-100" id="addon-amount">Amount</span>
     </div>
-    <input asp-for="Amount" name="Amount" class="form-control" aria-describedby="addon-amount">
+    <input asp-for="Amount" name="Amount" class="form-control" aria-describedby="addon-amount" placeholder="1234,56">
 </div>
 <span asp-validation-for="Amount" class="text-danger"></span>
 <label for="Amount" class="validation-error-message text-danger"></label>

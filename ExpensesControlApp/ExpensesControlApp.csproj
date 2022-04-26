@@ -27,7 +27,6 @@
 
   <ItemGroup>
     <Folder Include="Migrations\" />
-    <Folder Include="Views\Shared\EditorTemplates\" />
   </ItemGroup>
 
   <ItemGroup>

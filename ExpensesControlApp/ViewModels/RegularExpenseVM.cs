@@ -18,7 +18,7 @@ namespace ExpensesControlApp.ViewModels
         public string ExpenseName { get; set; }
 
         [Required(ErrorMessage = "The Amount of the expense is required")]
-        [RegularExpression(@"^[0-9]+(,[0-9]{1,3})?$", ErrorMessage = "The Amount has too many digits after the \",\"")]
+        [RegularExpression(@"^[0-9]+(,[0-9]{1,2})?$", ErrorMessage = "The Amount has invalid format")]
         [Min(0.01, ErrorMessage = "The Amount should be greater than zero")]
         public decimal? Amount { get; set; }
 
