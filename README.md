@@ -42,6 +42,8 @@ This is a ASP.NET MVC web application that provides the main CRUD operations for
 ![Expenses page views mobile](./images/expenses_mobile.png)
 ## Technologies used
 - ASP.NET MVC 5
+- .NET Framework 6.0
+- C# 10.0
 - Visual Studio 2022
 - MS SQL Server 2019
 - Entity Framework 6.0.3
