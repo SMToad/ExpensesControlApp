@@ -4,7 +4,7 @@ This is a ASP.NET MVC web application that provides the main CRUD operations for
 - Adding, deleting and updating expenses
 - Sorting expenses by name, amount and date
 - All the above features for the expenses, that are repeated weekly or monthly
-- Viewing expenses by specific time spans
+- Viewing expenses by different time spans (today, this week, this month, total)
 - Setting up and updating an expense limit
 - Visible representation of the available amount of money
 - Server and client side validation
