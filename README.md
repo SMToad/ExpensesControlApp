@@ -51,4 +51,4 @@ This is a ASP.NET MVC web application that provides the main CRUD operations for
 - Bootstrap 5
 - FontAwesome 4.7.0
 ## Acknowledgments
-This project was based on ASP.NET MVC tutorial by tutorialsEU (https://www.youtube.com/watch?v=DqD-NJf7-OM)
+This project was based on ![ASP.NET MVC tutorial](https://www.youtube.com/watch?v=DqD-NJf7-OM) by tutorialsEU.
