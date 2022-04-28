@@ -50,5 +50,9 @@ This is a ASP.NET MVC web application that provides the main CRUD operations for
 - JQuery 3.6.0
 - Bootstrap 5
 - FontAwesome 4.7.0
+## Room for improvement
+- Add user authentification 
+- Add the ability to select a specific time span
+- Add the ability to track earnings
 ## Acknowledgments
 This project was based on ![ASP.NET MVC tutorial](https://www.youtube.com/watch?v=DqD-NJf7-OM) by tutorialsEU.
