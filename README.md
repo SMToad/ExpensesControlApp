@@ -56,4 +56,4 @@ This is a ASP.NET MVC web application that provides the main CRUD operations for
 - Add the ability to select a specific time span
 - Add the ability to track earnings
 ## Acknowledgements
-This project was based on ![ASP.NET MVC tutorial](https://www.youtube.com/watch?v=DqD-NJf7-OM) by tutorialsEU.
+This project was based on <a href="https://www.youtube.com/watch?v=DqD-NJf7-OM">ASP.NET MVC tutorial</a> by tutorialsEU.
