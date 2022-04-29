@@ -17,7 +17,8 @@ This is a ASP.NET MVC web application that provides the main CRUD operations for
 ![Expenses time span page](./images/expenses_timespan.png)
 
 **Delete partial view**
-![Delete page](./images/expenses_delete.png)
+
+![Delete page](./images/expense_delete.gif)
 
 **Add page view**
 ![Expenses create page](./images/expenses_add.png)
