@@ -55,5 +55,5 @@ This is a ASP.NET MVC web application that provides the main CRUD operations for
 - Add user authentification 
 - Add the ability to select a specific time span
 - Add the ability to track earnings
-## Acknowledgments
+## Acknowledgements
 This project was based on ![ASP.NET MVC tutorial](https://www.youtube.com/watch?v=DqD-NJf7-OM) by tutorialsEU.
