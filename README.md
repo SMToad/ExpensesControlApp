@@ -4,7 +4,7 @@ This is a ASP.NET MVC web application that provides the main CRUD operations for
 - Adding, deleting and updating expenses
 - Sorting expenses by name, amount and date
 - All the above features for the expenses, that are repeated weekly or monthly
-- Viewing expenses by specific time spans
+- Viewing expenses by different time spans (today, this week, this month, total)
 - Setting up and updating an expense limit
 - Visible representation of the available amount of money
 - Server and client side validation
@@ -42,11 +42,17 @@ This is a ASP.NET MVC web application that provides the main CRUD operations for
 ![Expenses page views mobile](./images/expenses_mobile.png)
 ## Technologies used
 - ASP.NET MVC 5
+- .NET Framework 6.0
+- C# 10.0
 - Visual Studio 2022
 - MS SQL Server 2019
 - Entity Framework 6.0.3
 - JQuery 3.6.0
 - Bootstrap 5
 - FontAwesome 4.7.0
+## Room for improvement
+- Add user authentification 
+- Add the ability to select a specific time span
+- Add the ability to track earnings
 ## Acknowledgments
-This project was based on ASP.NET MVC tutorial by tutorialsEU (https://www.youtube.com/watch?v=DqD-NJf7-OM)
+This project was based on ![ASP.NET MVC tutorial](https://www.youtube.com/watch?v=DqD-NJf7-OM) by tutorialsEU.
