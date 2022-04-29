@@ -18,7 +18,7 @@ This is a ASP.NET MVC web application that provides the main CRUD operations for
 
 **Delete partial view**
 
-![Delete page](./images/expense_delete.gif)
+![Delete page](./images/expenses_delete.gif)
 
 **Add page view**
 ![Expenses create page](./images/expenses_add.png)
